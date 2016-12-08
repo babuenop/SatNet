@@ -10,9 +10,11 @@
                 </li>
                 <li><a href="acta.php">Leer</a>
                 </li>
-                <li><a href="acta.php">Editar</a>
+                <li><a href="EditarActa.php">Editar</a>
                 </li>
                 <li><a href="acta.php">Eliminar</a>
+                </li>
+                <li><a href="reportes/test.php">Reportes</a>
                 </li>
                 <li><a href="http://localhost/phpmyadmin/" target="_blank">Database</a>
                 </li>

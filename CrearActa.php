@@ -1,9 +1,3 @@
-<?php
-  include "php/conexion.php";
-  $query= "SELECT * FROM `tbl_actas`";
-  $resultado=$con->query($query);
-?>
-
 <html>
 	<head>
 		<title>Crear Acta</title>
@@ -24,21 +18,19 @@
 		</div>
 
 		<form class="form-horizontal" form action="php/crearActa.php" method="POST">
-		<fieldset>
 
 		<!-- Form Name -->
-		<legend></legend>
 
-		<!-- Fecha-->
+		<!--Fecha-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label">Fecha</label>  
-		  <div class="col-md-1">
-		  <input id="Fecha" type="Fecha" name="Fecha" class="form-control input-md" value="<?php echo date("d/m/Y"); ?>"  disabled>
+		  <label class="col-md-4 control-label">fecha</label>  
+		  <div class="col-md-4">
+		  <input id="Fecha" name="Fecha" placeholder="Acta Realizada Por" class="form-control input-md" required="" type="text" value="<?php echo date("d/m/Y"); ?>" readonly></input>
 		    
 		  </div>
-		</div>        
+		</div>
 
-		<!-- Realizado Por-->
+		<!-- RealizadoPor-->
 		<div class="form-group">
 		  <label class="col-md-4 control-label">Realizado Por</label>  
 		  <div class="col-md-4">
@@ -55,15 +47,13 @@
 		  </div>
 		</div>
 
-		<!-- Button -->
+		<!-- Crear -->
 		<div class="form-group">
 		  <label class="col-md-4 control-label" for="Crear"></label>
 		  <div class="col-md-8">
 		    <button id="Crear" name="Crear" class="btn btn-success">Crear</button>
 		  </div>
 		</div>
-
-		</fieldset>
 		</form>
 	</body>
 </html>
