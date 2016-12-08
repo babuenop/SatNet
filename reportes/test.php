@@ -1,6 +1,16 @@
 <?php
 require_once ('../lib/pdf/mpdf.php');
 
+
+$con = new mysqli('localhost','root','',myapp);
+$sql = "SELECT * FROM `canasta` ";
+$prepare = $con->prepare($sql);
+$prepare -> execute();
+$resulset = $prepare->get_result();
+while($articulos[]=$resulset->fetch_array());
+$resulset->close();
+$prepare->close();
+$con->close();
 $html = '
 
 <div class="row">
@@ -56,17 +66,18 @@ $html = '
 			<h6>Origen</h6>
 		</th>
 		</tr>
-	</thead>
-
-	<tbody>
-		<tr>
-		<td><h6>Artículo</h6></td>
+	</thead><tbody>';
+	foreach ($articulos as $articulo) {
+		$html ='<tr>
+		<td><h6>'.$articulos[Articulo].'</h6></td>
 		<td><h6>Esta es la descripcion del articulo </h6></td>
 		<td><h6>Artículo</h6></td>
 		<td><h6>Artículo</h6></td>
 		<td><h6>Artículo</h6></td>
 		</tr>
-		<tr>
+		<tr>';
+	}
+$html ='
 	</tbody>
 </table>
 

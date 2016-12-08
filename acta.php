@@ -3,18 +3,17 @@
 <!DOCTYPE html><html lang="en">
 <meta charset="utf-8" />
 <link href="css/bootstrap.css" rel="stylesheet" />
-</pre>
+<?php include "php/navbar.php" ?>
 <div class="container">
 <div class="row"></div>
  <!-- /row --></div>
-<pre>
+
  
  <!-- /container -->
 
-<link href="css/bootstrap.css" rel="stylesheet">
 
 
-</pre>
+
 <div class="col-lg-12">
 	<div class="col-xs-6">
 		<h1><a href=" "><img alt="" src="img/logo.jpg" width="140" height="40" /></a></h1>
