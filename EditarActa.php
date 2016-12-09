@@ -9,6 +9,7 @@
 
 <!DOCTYPE html><html lang="en">
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/bootstrap.css" rel="stylesheet" />
 <?php include "php/navbar.php" ?>
 <div class="container">
@@ -85,7 +86,9 @@
 					<th>Estado</h5></th>
 					<th>Cantidad</h5></th>
 					<th>Revisado Por</th>
-					</tr>;
+					<th>Editar</th>
+					<th>Borrar</th>
+					</tr>
 				</thead>";
  	for ($i=0; $i<$nfilas; $i++){
           $resultado = mysqli_fetch_array ($query);
@@ -98,7 +101,9 @@
 				<td>". $resultado['Estado'] ."</td>
 				<td>". $resultado['Cantidad'] ."</td>
 				<td>". $resultado['Revisado Por'] ."</td>
-				</tr>
+				<td><a href=editar.php?IdActa=".$IdActa."&Codigo=".$resultado['Codigo'] ."><img src=img/edit.png width=25 height=25 /></a>
+				<td><a href=php/BorrarMaterial.php?IdActa=".$IdActa."&Codigo=".$resultado['Codigo'] ."><img src=img/del.png width=25 height=25 /></a>
+				
 			</tbody>";
 	}
 	print"</table>";
