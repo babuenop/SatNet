@@ -9,6 +9,8 @@
 
 <!DOCTYPE html><html lang="en">
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link href="css/bootstrap.css" rel="stylesheet" />
 <?php include "php/navbar.php" ?>
 <div class="container">
@@ -63,23 +65,29 @@
 <!-- / fin de sección de datos Generales  -->
 <div class="col-lg-12">
 <!-- / Formulario  -->
-<form class="form-horizontal" form action="php/AgregarMaterial.php" method="POST">
+<form class="form-inline" form action="php/AgregarMaterial.php" method="POST">
 
 		<!-- Form Name -->
 
+		<!--IdActa-->
+		<div class="form-group">
+			<input type="hidden" class="form-control input-md" id="IdActa" name="IdActa" value="<?php echo $IdActa; ?>">
+		</div>	
+
 		<!--Material-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label">Material</label>  
-		  <div class="col-md-4">
+		  <label class="col">Material</label>  
+		  <div class="col">
 		  <input id="Material" name="Material" placeholder="No Material" class="form-control input-md" required="" type="text" value="" ></input>
+
 		    
 		  </div>
 		</div>
 
 		<!--Descripcion-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label">Descripcion</label>  
-		  <div class="col-md-4">
+		  <label class="col">Descripcion</label>  
+		  <div class="col">
 		  <input id="Descripcion" name="Descripcion" placeholder="Descripcion Material" class="form-control input-md" required="" type="text">
 		    
 		  </div>
@@ -87,40 +95,40 @@
 
 		<!--Proveedor-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label" for="Proveedor">Proveedor</label>
-		  <div class="col-md-4">                     
+		  <label class="col" for="Proveedor">Proveedor</label>
+		  <div class="col">                     
 		    <input id="Proveedor" name="Proveedor" placeholder="Proveedor" class="form-control input-md" required="" type="text">
 		  </div>
 		</div>
 
 		<!--Estado-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label" for="Proveedor">Proveedor</label>
-		  <div class="col-md-4">                     
-		    <input id="Proveedor" name="Proveedor" placeholder="Proveedor" class="form-control input-md" required="" type="text">
+		  <label class="col" for="Proveedor">Estado</label>
+		  <div class="col">                     
+		    <input id="Estado" name="Estado" placeholder="Estado" class="form-control input-md" required="" type="text">
 		  </div>
 		</div>
 
 		<!--Cantidad-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label" for="Cantidad">Cantidad</label>
-		  <div class="col-md-4">                     
-		    <input id="Cantidad" name="Cantidad" placeholder="Cantidad" class="form-control input-md" required="" type="text">
+		  <label class="col" for="Cantidad">Cantidad</label>
+		  <div class="col">                     
+		    <input id="Cantidad" name="Cantidad" placeholder="Cantidad" class="form-control input-md" required="" type="number">
 		  </div>
 		</div>
 
 		<!--Ingresado Por-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label" for="IngresadoPor">Ingresado Por</label>
-		  <div class="col-md-4">                     
+		  <label class="col" for="IngresadoPor">Ingresado Por</label>
+		  <div class="col">                     
 		    <input id="IngresadoPor" name="IngresadoPor" placeholder="IngresadoPor" class="form-control input-md" required="" type="text">
 		  </div>
 		</div>
 
 		<!-- Boton Agregar Material -->
 		<div class="form-group">
-		  <label class="col-md-4 control-label" for="Agregar"></label>
-		  <div class="col-md-8">
+		  <label class="col" for="Agregar"></label>
+		  <div class="col">
 		    <button id="Agregar" name="Agregar" class="btn btn-primary">Agregar</button>
 		  </div>
 		</div>
