@@ -1,4 +1,5 @@
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<head>
 		<title>Crear Acta</title>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -23,7 +24,7 @@
 
 		<!--Fecha-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label">fecha</label>  
+		  <label class="col-md-4 control-label">Fecha</label>  
 		  <div class="col-md-4">
 		  <input id="Fecha" name="Fecha" placeholder="Acta Realizada Por" class="form-control input-md" required="" type="text" value="<?php echo date("d/m/Y"); ?>" readonly></input>
 		    
@@ -32,9 +33,9 @@
 
 		<!-- RealizadoPor-->
 		<div class="form-group">
-		  <label class="col-md-4 control-label">Realizado Por</label>  
+		  <label class="col-md-4 control-label">Creada Por</label>  
 		  <div class="col-md-4">
-		  <input id="RealizadoPor" name="RealizadoPor" placeholder="Acta Realizada Por" class="form-control input-md" required="" type="text">
+		  <input id="RealizadoPor" name="RealizadoPor" placeholder="Creada Por" class="form-control input-md" required="" type="text">
 		    
 		  </div>
 		</div>
@@ -51,7 +52,7 @@
 		<div class="form-group">
 		  <label class="col-md-4 control-label" for="Crear"></label>
 		  <div class="col-md-8">
-		    <button id="Crear" name="Crear" class="btn btn-success">Crear</button>
+		    <button id="Crear" name="Crear" class="btn btn-primary">Crear</button>
 		  </div>
 		</div>
 		</form>
