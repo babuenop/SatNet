@@ -72,6 +72,8 @@
 <!-- / fin de sección de datos Generales  -->
 <div class="col-lg-12">
 <!-- / Formulario  -->
+<LEGEND></LEGEND>
+<LEGEND></LEGEND>
 <form class="form-inline" form action="php/EditarMaterial.php" method="POST">
 
 		<!-- Form Name -->
