@@ -64,9 +64,11 @@
 <!-- / fin de sección de datos Generales  -->
 <div class="col-lg-12">
 <!-- / Tabla  -->
-
-<a type="btn-primary" class="btn btn-primary" href="AgregarMaterial.php">Agregar Material</a>
-
+<form class="form-inline" form action="agregarmaterial.php" method="get">
+	<input type="hidden" class="form-control input-md" id="IdActa" name="IdActa" value="<?php echo $IdActa; ?>">
+	<input type="text" name="busqueda" class="form-control input-md" required="">
+	<input type="submit" Value="Buscar" class="btn-primary">
+</form>
 <?php 
   include "php/conexion.php"; 
 

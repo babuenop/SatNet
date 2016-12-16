@@ -2,8 +2,8 @@
 require_once ('../lib/pdf/mpdf.php');
 
 
-$con = new mysqli('localhost','root','',myapp);
-$sql = "SELECT * FROM `canasta` ";
+$con = new mysqli('localhost','root','',satnet);
+$sql = "SELECT * FROM `tbl_actasdetalle` ";
 $prepare = $con->prepare($sql);
 $prepare -> execute();
 $resulset = $prepare->get_result();
@@ -66,18 +66,7 @@ $html = '
 			<h6>Origen</h6>
 		</th>
 		</tr>
-	</thead><tbody>';
-	foreach ($articulos as $articulo) {
-		$html ='<tr>
-		<td><h6>'.$articulos[Articulo].'</h6></td>
-		<td><h6>Esta es la descripcion del articulo </h6></td>
-		<td><h6>Artículo</h6></td>
-		<td><h6>Artículo</h6></td>
-		<td><h6>Artículo</h6></td>
-		</tr>
-		<tr>';
-	}
-$html ='
+	</thead><tbody>
 	</tbody>
 </table>
 
