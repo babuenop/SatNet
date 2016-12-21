@@ -31,11 +31,41 @@
 		  </div>
 		</div>
 
+
+		<!-- Origen-->
+		<div class="form-group">
+		  <label class="col-md-4 control-label">Origen</label>  
+		  <div class="col-md-4">
+		  <select id="Origen" name="Origen" placeholder="Origen" class="form-control input-md" required="" type="text">
+		    <?php include "values/ubicaciones.php"; ?>
+		    </select>
+		  </div>
+		</div>
+
 		<!-- RealizadoPor-->
 		<div class="form-group">
 		  <label class="col-md-4 control-label">Creada Por</label>  
 		  <div class="col-md-4">
 		  <input id="RealizadoPor" name="RealizadoPor" placeholder="Creada Por" class="form-control input-md" required="" type="text">
+		    
+		  </div>
+		</div>
+		
+		<!-- Destino-->
+		<div class="form-group">
+		  <label class="col-md-4 control-label">Destino</label>  
+		  <div class="col-md-4">
+		  <select id="Destino" name="Destino" placeholder="Destino" class="form-control input-md" required="" type="text">
+		    <?php include "values/ubicaciones.php"; ?>
+		    </select>
+		  </div>
+		</div>
+		
+		<!-- Recibe-->
+		<div class="form-group">
+		  <label class="col-md-4 control-label">Recibe</label>  
+		  <div class="col-md-4">
+		  <input id="Recibe" name="Recibe" placeholder="Recibe" class="form-control input-md" required="" type="text">
 		    
 		  </div>
 		</div>

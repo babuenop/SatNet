@@ -3,7 +3,7 @@ require_once ('../lib/pdf/mpdf.php');
 
 
 $con = new mysqli('localhost','root','',satnet);
-$sql = "SELECT * FROM `tbl_actasdetalle` ";
+$sql = "SELECT * FROM `tbl_actas` WHERE Idacta='140'";
 $prepare = $con->prepare($sql);
 $prepare -> execute();
 $resulset = $prepare->get_result();
@@ -19,7 +19,12 @@ $html = '
 	</div>
 
 	<div class="col-xs-8 text-right">
-		<h3><small>Canasta de Compras</small></h3>
+		<h3><small>Acta Entrega de Repuestos:';
+		foreach ($articulos as $articulo){
+			$html.= ''.$articulo['Idacta'].'';
+		}
+
+$html .='</small></h3>
 		<h4><small>Fecha: </small></h4>
 	</div>
 </div>
@@ -27,20 +32,36 @@ $html = '
 <div class="row">
 	<div class="col-xs-5">
 		<div class="panel panel-default" >
+			<div class="panel-default">
+				<div class="col-xs-5">
+				<h5><small><b>Origen</b></small></h5>
+				</div>
+			</div>
 			<div >
-				<h5><small>	Solicitado Por : </small></h5>
-				<h5><small>	Solicitado Por : </small></h5>
+				<div class="col-xs-5">
+				<h5><small>	ORIGEN </small></h5>
+				<h5><small>	Remite: </small></h5>
+				</div>
 			</div>			
 		</div>
 </div>
+
 	<div class="col-xs-5 text-Left">
-		<div class="panel panel-default">
-			<div>
-				<h5><small>Para : Nombre del Cliente<small></h5>
-				<h5><small>Para : Nombre del Cliente<small></h5>
+			<div class="panel panel-default" >
+			<div class="panel-default">
+				<div class="col-xs-5">
+				<h5><small><b>Destino</b></small></h5>
+				</div>
 			</div>
+			<div >
+				<div class="col-xs-5">
+				<h5><small>	Destino </small></h5>
+				<h5><small>	Remite: </small></h5>
+				</div>
+			</div>			
 		</div>
 	</div>
+
 </div>
 
 

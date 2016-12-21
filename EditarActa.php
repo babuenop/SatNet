@@ -32,17 +32,18 @@
 	</div>
 </div>
 
+
 <!--Datos Generales-->
 <div class="col-lg-12">
 	<div class="row">
 		<div class="col-xs-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Datos Generales Origen</h4>
+					<h4>Origen</h4>
 				</div>
 				<div class="panel-body">
-				Realizado por:	<?php echo $row['Realizado Por'] ?><br>
-				Aprobado por:	<?php echo $row['Realizado Por'] ?><br>
+				<b><?php echo $row['Origen'] ?></b><br>
+				Remite:	<?php echo $row['Realizado Por'] ?><br>
 				</div>
 			</div>
 		</div>
@@ -50,11 +51,11 @@
 		<div class="col-xs-5 col-xs-offset-2">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Datos Generales Destino</h4>
+					<h4>Destino</h4>
 				</div>
 				<div class="panel-body">
-				Entregado a:	<?php echo $row['Realizado Por'] ?><br>
-				Recibido por:	<?php echo $row['Realizado Por'] ?><br>
+				<b><?php echo $row['Destino'] ?></b><br>
+				Recibe:	<?php echo $row['Recibido Por'] ?><br>
 				</div>
 			</div>
 		</div>
@@ -112,13 +113,9 @@
 }?>
 
 <!-- / fin de tabla  -->
-<div class="box">
-		<h5>Observaciones</h5>
-	      <div id="div-1" class="textarea">
-	         <textarea id="wysihtml5" class="form-control" rows="5"></textarea>
-	        <div class="form-actions">
-	         <br><input type="submit" value="Submit" class="btn btn-primary"></br>
-	      	</div>
-	      </div>
-</div>
+<br>
+
+ <a href="reportes/imprimiracta.php"><img src=img/print.png width=40 height=40 />
+	
+
 </div>

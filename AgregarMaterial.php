@@ -122,7 +122,9 @@
 		<div class="form-group">
 		  <label class="col" for="Proveedor">Estado</label>
 		  <div class="col">                     
-		    <input id="Estado" name="Estado" placeholder="Estado" class="form-control input-md" required="" type="text" value="">
+		    <Select id="Estado" name="Estado" placeholder="Estado" class="form-control input-md" required="" type="text" value="">
+		    <?php include "values/Estado.php"; ?>
+		    </select>
 		  </div>
 		</div>
 

@@ -8,16 +8,16 @@
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="CrearActa.php">Crear</a>
                 </li>
-                <li><a href="acta.php">Leer</a>
-                </li>
+                
                 <li><a href="EditarActa.php">Editar</a>
                 </li>
-                <li><a href="acta.php">Eliminar</a>
-                </li>
-                <li><a href="reportes/test.php">Reportes</a>
+               
+                <li><a href="Reportes/test.php">Reportes</a>
                 </li>
                 <li><a href="http://localhost/phpmyadmin/" target="_blank">Database</a>
                 </li>
+
+
             </ul>
         </div>
     </div>
