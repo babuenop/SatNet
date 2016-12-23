@@ -4,7 +4,7 @@ require_once ('../lib/pdf/mpdf.php');
 
 	require('../php/conexion.php');
 	
-	$IdActa='133';
+	$IdActa=$_GET['IdActa'];
 
 	$sql="SELECT * FROM `tbl_actas` WHERE IdActa=$IdActa";
 	
@@ -27,7 +27,7 @@ $html = '
 	</div>
 
 	<div class="col-xs-8 text-right">
-		<h3><small>Acta Entrega de Repuestos ';
+		<h3><small>Acta Entrega de Repuestos';
 		foreach ($resultado as $resultado){
 			$html.= ''.$resultado['IdActa'].'';
 $html .='</small></h3>
