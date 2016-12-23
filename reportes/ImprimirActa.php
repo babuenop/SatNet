@@ -27,7 +27,7 @@ $html = '
 	</div>
 
 	<div class="col-xs-8 text-right">
-		<h3><small>Acta Entrega de Repuestos';
+		<h3><small>Acta Entrega de Repuestos No. ';
 		foreach ($resultado as $resultado){
 			$html.= ''.$resultado['IdActa'].'';
 $html .='</small></h3>
@@ -38,7 +38,7 @@ $html .='</small></h3>
 $html .='</small></h4>
 	</div>
 </div>
-
+<br>
 <div class="row">
 	<div class="col-xs-5">
 		<div class="" >
@@ -77,7 +77,7 @@ $html .='</small></h4>
 				<h5><small>	Recibe: 
 				';
 				$html.= ''.$resultado['Recibido Por'].'';
-		}; 
+		
 		$html.='</small></h5>
 				</div>
 			</div>			
@@ -134,13 +134,17 @@ $html .='</small></h4>
 	$html.='</table>
 
 <h6>Observaciones</h6>
-	<div class="panel panel-default">
-	   	<h5><small><small></h5>   
+	<div class="">
+	   	<h5><small>';
+	   	$html.= ''.$resultado['Comentarios'].'';
+	   	}; 
+	   	$html.='<small></h5>   
 	    </div>
     </div>
 
 	
 '
+
 ;
 
 $mpdf=new mPDF('A4');
