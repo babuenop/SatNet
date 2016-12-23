@@ -5,7 +5,6 @@ require_once ('../lib/pdf/mpdf.php');
 	require('../php/conexion.php');
 	
 	$IdActa='133';
-	$Codigo=$_GET['busqueda'];
 
 	$sql="SELECT * FROM `tbl_actas` WHERE IdActa=$IdActa";
 	
@@ -42,7 +41,7 @@ $html .='</small></h4>
 
 <div class="row">
 	<div class="col-xs-5">
-		<div class="panel panel-default" >
+		<div class="" >
 			<div class="panel-default">
 				<div class="col-xs-5">
 				<h5><small><b>Origen</b></small></h5>
@@ -64,7 +63,7 @@ $html .='</small></h4>
 </div>
 
 	<div class="col-xs-5 text-Left">
-			<div class="panel panel-default" >
+			<div class="" >
 			<div class="panel-default">
 				<div class="col-xs-5">
 				<h5><small><b>Destino</b></small></h5>
@@ -89,6 +88,7 @@ $html .='</small></h4>
 
 
 <!-- / fin de sección de datos del Cliente  -->
+<br>
 
 <table class="table table-bordered">
 	<thead>
@@ -122,12 +122,12 @@ $html .='</small></h4>
         $html.='  
 			<tbody>
 				<tr>
-				<td><h6><small>'.$resultado1['Codigo'] .'</small><h6></td>
-				<td><h6><small>'. $resultado1['Descripcion'] .'</small><h6></a></td>
-				<td><h6><small>'. $resultado1['Proveedor'] .'</small><h6></td>
-				<td><h6><small>'. $resultado1['Estado'] .'</small><h6></td>
-				<td><h6><small><center>'. $resultado1['Cantidad'] .'</small><h6></td>
-				<td><h6><small>'. $resultado1['Revisado Por'] .'</small><h6></td>
+				<td><h6><small> '.$resultado1['Codigo'] .' </small><h6></td>
+				<td><h6><small> '. $resultado1['Descripcion'] .' </small><h6></a></td>
+				<td><h6><small> '. $resultado1['Proveedor'] .' </small><h6></td>
+				<td><h6><small> '. $resultado1['Estado'] .' </small><h6></td>
+				<td><h6><small><center> '. $resultado1['Cantidad'] .' </small><h6></td>
+				<td><h6><small> '. $resultado1['Revisado Por'] .' </small><h6></td>
 				
 			</tbody>';
 	}}
