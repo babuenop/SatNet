@@ -110,12 +110,13 @@
 			</tbody>";
 	}
 	print"</table>";
-}?>
-
+}
+print"
 <!-- / fin de tabla  -->
 <br>
 
- <a href="reportes/imprimiracta.php"><img src=img/print.png width=40 height=40 />
+ <a name=acta href=reportes/imprimiracta.php?IdActa=$IdActa><img src=img/print.png width=40 height=40 />
 	
 
-</div>
+</div>"
+?>
