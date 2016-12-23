@@ -46,11 +46,11 @@
 		<div class="col-xs-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Datos Generales Origen</h4>
+					<h4>Origen</h4>
 				</div>
 				<div class="panel-body">
-				Realizado por:	<?php echo $row1['Realizado Por'] ?><br>
-				Aprobado por:	<?php echo $row1['Realizado Por'] ?><br>
+				<b><?php echo $row['Origen'] ?></b><br>
+				Remite:	<?php echo $row['Realizado Por'] ?><br>
 				</div>
 			</div>
 		</div>
@@ -58,11 +58,11 @@
 		<div class="col-xs-5 col-xs-offset-2">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Datos Generales Destino</h4>
+					<h4>Destino</h4>
 				</div>
 				<div class="panel-body">
-				Entregado a:	<?php echo $row1['Realizado Por'] ?><br>
-				Recibido por:	<?php echo $row1['Realizado Por'] ?><br>
+				<b><?php echo $row['Destino'] ?></b><br>
+				Recibe:	<?php echo $row['Recibido Por'] ?><br>
 				</div>
 			</div>
 		</div>

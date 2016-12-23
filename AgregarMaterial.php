@@ -4,7 +4,7 @@
 	$IdActa=$_GET['IdActa'];
 	$Codigo=$_GET['busqueda'];
 
-	$sql="SELECT * FROM `tbl_materiales` WHERE `Material`=$Codigo";
+	$sql="SELECT * FROM `tbl_materiales` WHERE `Material` LIKE '$Codigo'";
 	$sql1="SELECT * FROM `tbl_actas` WHERE `IdActa`=$IdActa";
 	
 	$resultado=$con->query($sql);
@@ -47,11 +47,11 @@
 		<div class="col-xs-5">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Datos Generales Origen</h4>
+					<h4>Origen</h4>
 				</div>
 				<div class="panel-body">
-				Realizado por:	<?php echo $row1['Realizado Por'] ?><br>
-				Aprobado por:	<?php echo $row1['Realizado Por'] ?><br>
+				<b><?php echo $row1['Origen'] ?></b><br>
+				Recibe:	<?php echo $row1['Realizado Por'] ?><br>
 				</div>
 			</div>
 		</div>
@@ -59,11 +59,11 @@
 		<div class="col-xs-5 col-xs-offset-2">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Datos Generales Destino</h4>
+					<h4>Destino</h4>
 				</div>
 				<div class="panel-body">
-				Entregado a:	<?php echo $row1['Realizado Por'] ?><br>
-				Recibido por:	<?php echo $row1['Realizado Por'] ?><br>
+				<b><?php echo $row1['Destino'] ?></b><br>
+				Recibe:	<?php echo $row1['Recibido Por'] ?><br>
 				</div>
 			</div>
 		</div>
