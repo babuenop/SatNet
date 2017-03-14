@@ -38,7 +38,7 @@ $html .='</small></h3>
 $html .='</small></h4>
 	</div>
 </div>
-<br>
+
 <div class="row">
 	<div class="col-xs-5">
 		<div class="" >
@@ -134,23 +134,63 @@ $html .='</small></h4>
 	$html.='</table>
 
 <h6>Observaciones</h6>
-	<div class="">
+	<div class="panel panel-default">
 	   	<h5><small>';
-	   	$html.= ''.$resultado['Comentarios'].'';
-	   	}; 
-	   	$html.='<small></h5>   
+				$html.= ''.$resultado['Comentarios'].'';
+		
+				$html.='<br><br>Fecha de Entrega: '. date("d/m/Y"); '<small></h5>  
+				
 	    </div>
     </div>
-
 	
 '
-
 ;
+}; 
+
+$html.='
+	<div class="row">
+	<div class="col-xs-5">
+		<div class="" >
+			<div class="panel-default">
+				<div class="col-xs-5">
+				<h5><small><b>Firma Entrega</b></small></h5>
+				</div>
+			</div>
+			<div >
+				<div class="col-md-6">
+				<h5><small>	</small></h5>
+				<h5><small>	Remite: __________________________________</small></h5>
+				</div>
+			</div>			
+		</div>
+</div>
+
+	<div class="col-xs-5 text-Left">
+			<div class="" >
+			<div class="panel-default">
+				<div class="col-xs-5">
+				<h5><small><b>Firma Recibe</b></small></h5>
+				</div>
+			</div>
+			<div >
+				<div class="col-md-6">
+				<h5><small>	</small></h5>
+				<h5><small>	Recibe: __________________________________</small></h5>
+				</div>
+			</div>			
+		</div>
+	</div>
+
+</div>
+
+
+';
+
 
 $mpdf=new mPDF('A4');
 $css = file_get_contents('../css/bootstrap.css');
 $mpdf->WriteHTML($css, 1);
 $mpdf->WriteHTML($html);
-$mpdf->Output('reporte.pdf','I');
+$mpdf->Output('Acta '.$IdActa.'.pdf','I');
 ?>
 

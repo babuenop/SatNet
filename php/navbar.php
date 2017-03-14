@@ -11,15 +11,6 @@
                 
                 <li><a href="EditarActa.php">Editar</a>
                 </li>
-               
-                <li><a href="Reportes/test.php">Reportes</a>
-                </li>
-                <li><a href="OutofService/Resumen.php">Fuera de Servicio</a>
-                </li>
-                <li><a href="http://localhost/phpmyadmin/" target="_blank">Database</a>
-                </li>
-
-
             </ul>
         </div>
     </div>

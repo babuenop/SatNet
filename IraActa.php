@@ -1,6 +1,9 @@
 <?php
 	require('php/conexion.php');
-	$sql="SELECT * FROM `tbl_actas` ORDER BY `IdActa` DESC limit 1";
+
+	$IdActa=$_GET['IdActa'];
+
+	$sql="SELECT * FROM `tbl_actas` WHERE IdActa=$IdActa";
 	$resultado=$con->query($sql);
 	$row=$resultado->fetch_assoc();
 	$IdActa=$row['IdActa'];
@@ -29,16 +32,7 @@
 		<h4>Acta No. <?php echo $IdActa; ?><br></h4>
 		<h4><?php echo $row['Fecha de Entrega']; ?><br></h4>
 		<h4><small></small></h4>
-
-		<form class="form-inline" form action="iraActa.php" method="get">
-		<input type="text" name="IdActa" class="form-control input-small" required="">
-		<input type="submit" Value="ir" class="btn-primary">
-		</form>
-		<br>
-
 	</div>
-
-	
 </div>
 
 
@@ -76,7 +70,7 @@
 <div class="col-lg-12">
 <!-- / Tabla  -->
 <form class="form-inline" form action="agregarmaterial.php" method="get">
-	<input type="hidden" class="form-control input-md" id="IdActa" name="IdActa" value="<?php echo $IdActa; ?>">
+	<input type="hidden" class="form-control input-xs" id="IdActa" name="IdActa" value="<?php echo $IdActa; ?>">
 	<input type="text" name="busqueda" class="form-control input-md" required="">
 	<input type="submit" Value="Buscar" class="btn-primary">
 </form>

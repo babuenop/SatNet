@@ -13,7 +13,7 @@
 			</div>
 
 			<div class="col-xs-6 text-right">
-				<h2>Crear</h2>
+				<h2>Crear Acta - Entrega de Repuestos</h2>
 
 			</div>
 		</div>

@@ -4,7 +4,7 @@
 	$IdActa=$_GET['IdActa'];
 	$Codigo=$_GET['Codigo'];
 
-	$sql="SELECT * FROM `tbl_actasdetalle` WHERE `IdActa`=$IdActa and `Codigo`=$Codigo";
+	$sql="SELECT * FROM `tbl_actasdetalle` WHERE `IdActa`=$IdActa and `Codigo`='$Codigo'";
 	$sql1="SELECT * FROM `tbl_actas` WHERE `IdActa`=$IdActa";
 	
 	$resultado=$con->query($sql);
@@ -49,8 +49,8 @@
 					<h4>Origen</h4>
 				</div>
 				<div class="panel-body">
-				<b><?php echo $row['Origen'] ?></b><br>
-				Remite:	<?php echo $row['Realizado Por'] ?><br>
+				<b></b><br>
+				<br>
 				</div>
 			</div>
 		</div>
@@ -61,8 +61,8 @@
 					<h4>Destino</h4>
 				</div>
 				<div class="panel-body">
-				<b><?php echo $row['Destino'] ?></b><br>
-				Recibe:	<?php echo $row['Recibido Por'] ?><br>
+				<b></b><br>
+				<br>
 				</div>
 			</div>
 		</div>
