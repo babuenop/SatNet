@@ -19,8 +19,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="css/bootstrap.css" rel="stylesheet" />
-<?php include "php/navbar.php" ?>
+<link href="../css/bootstrap.css" rel="stylesheet" />
+<?php include "../php/navbar.php" ?>
 <div class="container">
 <div class="row"></div>
  <!-- /row -->
@@ -30,7 +30,7 @@
 <!--Encabezado del Acta-->
 <div class="col-lg-12">
 	<div class="col-xs-6">
-		<h1><a href=" "><img alt="" src="img/logo.jpg" width="140" height="40" /></a></h1>
+		<h1><a href=" "><img alt="" src="../img/logo.jpg" width="140" height="40" /></a></h1>
 	</div>
 
 	<div class="col-xs-6 text-right">
@@ -123,7 +123,7 @@
 		  <label class="col" for="Proveedor">Estado</label>
 		  <div class="col">                     
 		    <Select id="Estado" name="Estado" placeholder="Estado" class="form-control input-md" required="" type="text" value="">
-		    <?php include "values/Estado.php"; ?>
+		    <?php include "../values/Estado.php"; ?>
 		    </select>
 		  </div>
 		</div>

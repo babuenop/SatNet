@@ -1,20 +1,24 @@
+
+
+
+
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<head>
 		<title>Crear Acta</title>
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 		<?php include "php/navbar.php"; ?>
 	</head>
-	<body>
+
+<body>
 
 		<div class="col-lg-12">
 			<div class="col-xs-6">
-				<h1><a href=" "><img alt="" src="img/logo.jpg" width="140" height="40" /></a></h1>
+				<h1><a href=" "><img alt="" src="../img/logo.jpg" width="140" height="40" /></a></h1>
 			</div>
 
 			<div class="col-xs-6 text-right">
 				<h2>Crear Acta - Entrega de Repuestos</h2>
-
 			</div>
 		</div>
 
@@ -37,7 +41,7 @@
 		  <label class="col-md-4 control-label">Origen</label>  
 		  <div class="col-md-4">
 		  <select id="Origen" name="Origen" placeholder="Origen" class="form-control input-md" required="" type="text">
-		    <?php include "values/ubicaciones.php"; ?>
+		    <?php include "../values/ubicaciones.php"; ?>
 		    </select>
 		  </div>
 		</div>
@@ -56,7 +60,7 @@
 		  <label class="col-md-4 control-label">Destino</label>  
 		  <div class="col-md-4">
 		  <select id="Destino" name="Destino" placeholder="Destino" class="form-control input-md" required="" type="text">
-		    <?php include "values/ubicaciones.php"; ?>
+		    <?php include "../values/ubicaciones.php"; ?>
 		    </select>
 		  </div>
 		</div>

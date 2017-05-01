@@ -22,7 +22,7 @@
 		        <h3></h3>
 		        <p></p>
 		        <p>
-		        <a href="crearacta.php" class="btn btn-default" role="button">Entrega de Repuestos</a>
+		        <a href="Entregas/index.php" class="btn btn-default" role="button">Entrega de Repuestos</a>
 		        </p>
 		      </div>
 		    </div>
@@ -37,7 +37,7 @@
 		        <h3></h3>
 		        <p></p>
 		        <p>
-		        <a href="crearacta.php" class="btn btn-default" role="button">Salida de Repuestos</a>
+		        <a href="" class="btn btn-default" role="button">Salida de Repuestos</a>
 		        </p>
 		      </div>
 		    </div>
@@ -52,13 +52,28 @@
 		        <h3></h3>
 		        <p></p>
 		        <p>
-		        <a href="crearacta.php" class="btn btn-default" role="button">Inventarios de Memorias</a>
+		        <a href="" class="btn btn-default" role="button">Inventarios de Memorias</a>
 		        </p>
 		      </div>
 		    </div>
 		  </div>
 		</div>
 
+		<div class="col">
+		  <div class="col-sm-6 col-md-4">
+		    <div class="thumbnail">
+		      <img src="img/stocks.jpg" alt="...">
+		      <div class="caption">
+		        <h3></h3>
+		        <p></p>
+		        <p>
+		       	
+		        <a href="Materiales/index.php" class="btn btn-default" role="button">Materiales</a>
+		        </p>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
 	</body>
 </html>

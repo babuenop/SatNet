@@ -13,7 +13,7 @@
 <!DOCTYPE html><html lang="en">
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="css/bootstrap.css" rel="stylesheet" />
+<link href="../css/bootstrap.css" rel="stylesheet" />
 <?php include "php/navbar.php" ?>
 <div class="container">
 <div class="row"></div>
@@ -24,7 +24,7 @@
 <!--Encabezado del Acta-->
 <div class="col-lg-12">
 	<div class="col-xs-6">
-		<h1><a href=" "><img alt="" src="img/logo.jpg" width="140" height="40" /></a></h1>
+		<h1><a href=" "><img alt="" src="../img/logo.jpg" width="140" height="40" /></a></h1>
 	</div>
 
 	<div class="col-xs-6 text-right">
@@ -108,8 +108,8 @@
 				<td>". $resultado['Estado'] ."</td>
 				<td>". $resultado['Cantidad'] ."</td>
 				<td>". $resultado['Revisado Por'] ."</td>
-				<td><a href=editar.php?IdActa=".$IdActa."&Codigo=".$resultado['Codigo'] ."><img src=img/edit.png width=25 height=25 /></a>
-				<td><a href=php/BorrarMaterial.php?IdActa=".$IdActa."&Codigo=".$resultado['Codigo'] ."><img src=img/del.png width=25 height=25 /></a>
+				<td><a href=editar.php?IdActa=".$IdActa."&Codigo=".$resultado['Codigo'] ."><img src=../img/edit.png width=25 height=25 /></a>
+				<td><a href=php/BorrarMaterial.php?IdActa=".$IdActa."&Codigo=".$resultado['Codigo'] ."><img src=../img/del.png width=25 height=25 /></a>
 				
 			</tbody>";
 	}
@@ -119,7 +119,7 @@ print"
 <!-- / fin de tabla  -->
 <br>
 
- <a name=acta href=reportes/imprimiracta.php?IdActa=$IdActa><img src=img/print.png width=40 height=40 />
+ <a name=acta href=reportes/imprimiracta.php?IdActa=$IdActa><img src=../img/print.png width=40 height=40 />
 	
 
 </div>"
