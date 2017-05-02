@@ -9,7 +9,7 @@
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="CrearMaterial.php">Crear Material</a>
                 </li>
-                <li><a href="EditarMaterial.php">Editar Material</a>
+                <li><a href="EditaMaterial.php">Buscar / Editar Material</a>
                 </li>
                  <li><a href="ConsultarMaterial.php">Consultar Material</a>
                 </li>

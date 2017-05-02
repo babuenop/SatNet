@@ -66,8 +66,9 @@ if ($nfilas > 0){
 			print ("<TH>Ubicacion</TH>\n");
 			print ("<TH>Partnumber</TH>\n");
 			print ("<TH>Proveedor</TH>\n");
+			print ("<TH>Categoria</TH>\n");
 			print ("<TH>Editar</TH>\n");
-			print ("<TH>Borrar</TH>\n");
+			// print ("<TH>Borrar</TH>\n");
 		print ("</TR>\n");
         print ("</THEAD>");
         print ("<TBODY>");
@@ -80,8 +81,9 @@ if ($nfilas > 0){
 	print ("<TD>" . $resultado['Ubicacion'] .	"</TD>\n");
 	print ("<TD>" . $resultado['Partnumber'] .	"</TD>\n");
 	print ("<TD>" . $resultado['Proveedor'] .	"</TD>\n");
+	print ("<TD>" . $resultado['Categoria'] .	"</TD>\n");
 	print ("<TD><a href=EditaMaterial.php?Material=". $resultado["Material"] ."><button type='button' class='btn btn-default'>Editar</button></a></TD>\n");
-	print ("<TD><a href=editamat.php?IdActa=". $resultado['Material'] ."><button type='button' class='btn btn-default'>Borrar</button></a></TD>\n");
+	// print ("<TD><a href=editamat.php?IdActa=". $resultado['Material'] ."><button type='button' class='btn btn-default'>Borrar</button></a></TD>\n");
 	
 	print ("</TR>\n");
        

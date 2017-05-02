@@ -1,4 +1,6 @@
 <?php
+	error_reporting(0);
+
 	require('php/conexion.php');
 	
 	$Material=$_GET['Material'];
@@ -11,7 +13,7 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<head>
-		<title>Editar Material</title>
+		<title>Buscar / Editar Material</title>
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
 		<?php include "php/navbar.php"; ?>
 	</head>
@@ -30,15 +32,21 @@
 	</div>
 </div>
 
-<form class="form-horizontal" form action="php/EditarMaterial.php" method="POST">
 
+<form class="form-inline col-lg-12" form action="EditaMaterial.php" method="get">
+	<label class="col-md-4 control-label"></label>  
+	<input id="Material" name="Material" class="form-control input-md" required="" type="text" autocomplete="off"></input>
+	<input type="submit" Value="Buscar" class="btn-primary">
+</form>
+
+<form class="form-horizontal" form action="php/EditarMaterial.php" method="POST">
 
 		<!--Material-->
 		<div class="form-group">
 
 		  <label class="col-md-4 control-label">Material</label>  
 		  <div class="col-md-4">
-		  <input id="Material" name="Material" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $row['Material']; ?>"></input>
+		  <input id="Material" name="Material" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $row['Material']; ?>" readonly></input>
 		    
 		  </div>
 		</div>
@@ -61,6 +69,18 @@
 		  </div>
 		</div>
 
+		<!--Categoria-->
+		<div class="form-group">
+		 <label class="col-md-4 control-label">Categoria</label>  
+		  <div class="col-md-4">                
+		   		    
+		    <select id="Categoria" name="Categoria" placeholder="Categoria" class="form-control input-md" required="" type="text">
+		      <option selected><?php echo $row['Categoria']; ?></option>
+		        <?php include "../values/Categorias.php"; ?>
+		     </select>     
+		  </div>
+		</div>
+
 		<!--Partnumber-->
 		<div class="form-group">
 		  <label class="col-md-4 control-label">Partnumber</label>  
@@ -68,6 +88,8 @@
 		    <input id="Partnumber" name="Partnumber" placeholder="Partnumber" class="form-control input-md" required="" type="text" value="<?php echo $row['Partnumber']; ?>">
 		  </div>
 		</div>
+
+
 
 		<!--Proveedor-->
 		<div class="form-group">
