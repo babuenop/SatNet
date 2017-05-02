@@ -99,6 +99,22 @@
 		  </div>
 		</div>
 
+		<!--Ultima Modificacion-->
+		<div class="form-group">
+		 <label class="col-md-4 control-label">Modificado el</label>  
+		  <div class="col-md-4">                
+		    <div class='input-group date' id='datetimepicker3'>
+                    <input type='text' class="form-control" value="<?php echo date("d/m/Y h:i:s"); ?>" readonly />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+		  </div>
+
+		</div>
+
+
+
 		<!-- Boton Editar Material -->
 		<div class="form-group">
 		  <label class="col-md-4 control-label" for="Editar"></label>
@@ -107,6 +123,8 @@
 		  </div>
 		</div>
 </form>
+
+
 <!-- / fin de Formulario -->
 
 </div>

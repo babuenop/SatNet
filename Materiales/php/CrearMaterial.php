@@ -27,7 +27,7 @@ if(array_key_exists('Crear',$_POST))
 		mysqli_query($con, $sql);
 		mysqli_close($con); 
 	
-		print "<script>window.location='../VerMateial.php';</script>";
+		print "<script>window.location='../EditaMaterial.php?Material=$Material';</script>";
 	}
 	else
 	{
