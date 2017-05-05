@@ -44,7 +44,7 @@
 		  </div>
 		</div>
  -->
-<!-- 		<div class="col">
+		<div class="col">
 		  <div class="col-sm-6 col-md-4">
 		    <div class="thumbnail">
 		      <img src="img/memorias.jpg" alt="...">
@@ -58,7 +58,7 @@
 		    </div>
 		  </div>
 		</div>
- -->
+
 		<div class="col">
 		  <div class="col-sm-6 col-md-4">
 		    <div class="thumbnail">

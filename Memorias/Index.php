@@ -26,7 +26,7 @@
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
             <select name="Proveedor" placeholder="Proveedor" class="form-control" type="text">
-            <?php include "../values/Categorias.php"; ?>
+            <?php include "../values/Proveedores.php"; ?>
             </select>
           </div>
         </div>
@@ -39,7 +39,7 @@
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
             <select name="Tipo" placeholder="Tipo" class="form-control" type="text">
-            <?php include "../values/Categorias.php"; ?>
+            <?php include "../values/TipoMemorias.php"; ?>
             </select>
           </div>
         </div>
@@ -50,19 +50,23 @@
         <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-erase"></i></span>
-            <input name="Descripcion" placeholder="Descripcion" class="form-control" type="text" onKeyUp="this.value=this.value.toUpperCase();">
+            <input name="Descripcion" placeholder="Descripcion" class="form-control" type="text" onKeyUp="this.value=this.value.toUpperCase();" autocomplete="off">
           </div>
         </div>
       </div>  
 
       <!-- Text input-->
 
+       <!-- Text input-->
       <div class="form-group">
         <label class="col-md-4 control-label">Origen</label>
         <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-log-in"></i></span>
-            <input name="Origen" placeholder="Origen" class="form-control" type="text">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+            <select name="Origen" placeholder="Origen" class="form-control" type="text">
+            <?php include "../values/Ubicaciones.php"; ?>
+            <input name="RefOrigen" placeholder="Ref Adicional Origen" class="form-control" type="text" autocomplete="off">
+            </select>
           </div>
         </div>
       </div>
@@ -70,11 +74,14 @@
       <!-- Text input-->
 
       <div class="form-group">
-        <label class="col-md-4 control-label">UbicacionActual</label>
+        <label class="col-md-4 control-label">Ubicacion Actual</label>
         <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-log-out"></i></span>
-            <input name="UbicacionActual" placeholder="UbicacionActual" class="form-control" type="text">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+            <select name="UbicacionActual" placeholder="Ubicacion Actual" class="form-control" type="text">
+            <?php include "../values/Ubicaciones.php"; ?>
+            <input name="RefUbicacionActual" placeholder="Ref Adicional Ubicacion" class="form-control" type="text" autocomplete="off" >
+            </select>
           </div>
         </div>
       </div>
@@ -85,8 +92,8 @@
         <label class="col-md-4 control-label">IngresadoPor</label>
         <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
-            <input name="IngresadoPor" placeholder="IngresadoPor" class="form-control" type="text">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input name="IngresadoPor" placeholder="IngresadoPor" class="form-control" type="text" autocomplete="off" onKeyUp="this.value=this.value.toUpperCase();">
           </div>
         </div>
       </div> 
@@ -98,7 +105,7 @@
         <div class="col-md-4 inputGroupContainer">
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-            <textarea class="form-control" name="comment" placeholder="Observaciones"></textarea>
+            <textarea class="form-control" name="comment" placeholder="Observaciones" onKeyUp="this.value=this.value.toUpperCase();"></textarea>
           </div>
         </div>
       </div>
@@ -107,7 +114,7 @@
       <div class="form-group">
         <label class="col-md-4 control-label"></label>
         <div class="col-md-4">
-          <button type="submit" class="btn btn-primary">Send <span class="glyphicon glyphicon-send"></span></button>
+          <button type="submit" class="btn btn-primary">Agregar <span class="glyphicon glyphicon-send"></span></button>
         </div>
       </div>
 
