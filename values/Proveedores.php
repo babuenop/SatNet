@@ -1,0 +1,13 @@
+<option value="" select></option> 
+<option value="AINSWORTH">AINSWORTH</option>
+<option value="ARISTOCRAT">ARISTOCRAT</option>
+<option value="ATRONIC">ATRONIC</option>
+<option value="BALLY">BALLY</option>
+<option value="COUNT GmBh">COUNT GmBh</option>
+<option value="IGT">IGT</option>
+<option value="KONAMI">KONAMI</option>
+<option value="NOVOMATIC">NOVOMATIC</option>
+<option value="SCIENTIFIC GAMES">SCIENTIFIC GAMES</option> 
+<option value="SPIELO">SPIELO</option>
+<option value="SUZO">SUZO</option>
+<option value="WMS">WMS</option>
