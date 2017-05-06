@@ -65,7 +65,7 @@
             <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
             <select name="Origen" placeholder="Origen" class="form-control" type="text">
             <?php include "../values/Ubicaciones.php"; ?>
-            <input name="RefOrigen" placeholder="Ref Adicional Origen" class="form-control" type="text" autocomplete="off">
+            <input name="RefOrigen" placeholder="Referencia Adicional Origen" class="form-control" type="text" autocomplete="off">
             </select>
           </div>
         </div>
@@ -80,7 +80,7 @@
             <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
             <select name="UbicacionActual" placeholder="Ubicacion Actual" class="form-control" type="text">
             <?php include "../values/Ubicaciones.php"; ?>
-            <input name="RefUbicacionActual" placeholder="Ref Adicional Ubicacion" class="form-control" type="text" autocomplete="off" >
+            <input name="RefUbicacionActual" placeholder="Referencia Adicional Ubicacion" class="form-control" type="text" autocomplete="off" >
             </select>
           </div>
         </div>

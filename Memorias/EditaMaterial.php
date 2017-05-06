@@ -45,9 +45,9 @@
 		<div class="form-group">
 
 		  <label class="col-md-4 control-label">Material</label>  
-		  <div class="col-md-4">
-		  <input id="Material" name="Material" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $row['Material']; ?>" readonly></input>
-		    
+			<div class ="col-md-4">
+			<input id  ="Material" name="Material" placeholder="" class="form-control input-md" required="" type="text" value="<?php echo $row['Material']; ?>" readonly></input>
+			
 		  </div>
 		</div>
 
