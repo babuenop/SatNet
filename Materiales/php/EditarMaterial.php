@@ -9,6 +9,7 @@ if(array_key_exists('Editar',$_POST))
 		&& $_REQUEST['Partnumber'] != ""
 		&& $_REQUEST['Proveedor'] != ""
 		&& $_REQUEST['Categoria'] != ""
+		&& $_REQUEST['Modificadoel'] != ""
 		) 
 	{
 			
@@ -18,13 +19,14 @@ if(array_key_exists('Editar',$_POST))
 		$Partnumber = $_POST['Partnumber'];
 		$Proveedor = $_POST['Proveedor'];
 		$Categoria = $_POST['Categoria'];
+		$Modificadoel = $_POST['echo date("d/m/Y h:i:s")'];
 
 
 		include ('conexion.php');
 
 		print $Material;
 
-		$sql = "UPDATE `tbl_materiales` SET `Material` = '$Material', `Descripcion` = '$Descripcion', `Ubicacion` = '$Ubicacion', `Partnumber` = '$Partnumber', `Proveedor` = '$Proveedor', `Categoria` = '$Categoria' WHERE `tbl_materiales`.`Material` LIKE '$Material';";
+		$sql = "UPDATE `tbl_materiales` SET `Material` = '$Material', `Descripcion` = '$Descripcion', `Ubicacion` = '$Ubicacion', `Partnumber` = '$Partnumber', `Proveedor` = '$Proveedor', `Categoria` = '$Categoria', `Modificadoel` = '$Modificadoel' WHERE `tbl_materiales`.`Material` LIKE '$Material';";
 
 		mysqli_query($con, $sql);
 		mysqli_close($con); 

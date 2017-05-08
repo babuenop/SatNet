@@ -1,6 +1,6 @@
 <?php
 	error_reporting(0);
-
+	date_default_timezone_set("America/Bogota");
 	require('php/conexion.php');
 	
 	$Material=$_GET['Material'];
@@ -104,7 +104,8 @@
 		 <label class="col-md-4 control-label">Modificado el</label>  
 		  <div class="col-md-4">                
 		    <div class='input-group date' id='datetimepicker3'>
-                    <input type='text' class="form-control" value="<?php echo date("d/m/Y h:i:s"); ?>" readonly />
+                <input id="Modificadoel" name="Modificadoel" type='text' class="form-control" value="<?php echo date("d/m/Y h:i:s"); ?>" readonly />
+
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                     </span>

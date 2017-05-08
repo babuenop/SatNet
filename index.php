@@ -12,6 +12,7 @@
 	<head>
 		<title>Inicio</title>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		
 	</head>
 	<body>
 		<div class="col">
