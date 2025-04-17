@@ -1,0 +1,60 @@
+{% extends "inventario/base.html" %}
+
+{% block content %}
+<h2 class="text-xl font-bold mb-4">📊 Dashboard de Entregas</h2>
+
+<div class="mb-6">
+  <h3 class="text-lg font-semibold">📅 Entregas por Mes</h3>
+  <canvas id="graficoMeses" class="w-full max-w-3xl"></canvas>
+</div>
+
+<div class="mb-6">
+  <h3 class="text-lg font-semibold">📦 Materiales más Usados</h3>
+  <ul class="list-disc ml-6">
+    {% for mat in materiales_top %}
+      <li>{{ mat.material__codigo }} - {{ mat.material__descripcion }}: <strong>{{ mat.cantidad_total }}</strong></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="mb-6">
+  <h3 class="text-lg font-semibold">👷‍♂️ Técnicos con Más Entregas</h3>
+  <ul class="list-disc ml-6">
+    {% for tech in tecnicos_top %}
+      <li>{{ tech.tecnico__username }} - <strong>{{ tech.total }}</strong></li>
+    {% endfor %}
+  </ul>
+</div>
+
+{{ entregas_labels|json_script:"entregas-labels" }}
+{{ entregas_data|json_script:"entregas-data" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const labels = JSON.parse(document.getElementById('entregas-labels').textContent);
+const data = JSON.parse(document.getElementById('entregas-data').textContent);
+
+const ctx = document.getElementById('graficoMeses').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Entregas por mes',
+            data: data,
+            borderWidth: 1,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)'
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

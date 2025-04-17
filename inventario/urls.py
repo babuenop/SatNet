@@ -2,6 +2,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from . import views
+from .views_actas import acta_pdf
+
 
 app_name = 'inventario'
 
@@ -24,5 +26,11 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="registration/login.html"), name="login"),
     path("logout/", LogoutView.as_view(next_page="inventario:login"), name="logout"),
 
- 
+    # ---------- Dashboard ----------
+    path('actas/dashboard/', views.dashboard_actas, name='dashboard_actas'),
+
+    # ---------- Reportes ----------    
+    path('acta/<int:acta_id>/pdf/', acta_pdf, name='acta_pdf'),
+
+
 ]

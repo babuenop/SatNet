@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            size: letter;
+            margin: 2cm 1.5cm;
+        }
+
+        body {
+            font-family: "DejaVu Sans", sans-serif;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #1a237e;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header .title {
+            text-align: center;
+            flex-grow: 1;
+            font-size: 15px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        .logo {
+            width: 60px;
+        }
+
+        .info {
+            margin-bottom: 15px;
+        }
+
+        .info p {
+            margin: 3px 0;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #1a237e;
+            border-bottom: 1px solid #ccc;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10.5px;
+            margin-top: 10px;
+        }
+
+        th {
+            background-color: #e8eaf6;
+            border: 1px solid #9fa8da;
+            padding: 5px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #c5cae9;
+            padding: 5px;
+        }
+
+        .firma {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .firma .linea {
+            border-top: 1px solid #000;
+            width: 180px;
+            margin: 0 auto 5px auto;
+        }
+
+        .firma p {
+            margin: 0;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="{{ logo_url }}" class="logo" alt="Logo">
+        <div class="title">📜 Acta de Entrega Nº {{ acta.id }}</div>
+        <div class="logo"></div>
+    </div>
+
+    <div class="info">
+        <p><strong>Responsable:</strong> {{ acta.tecnico }}</p>
+        <p><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</p>
+        <p><strong>Estado:</strong>
+            {% if acta.firmada_por_tecnico %}
+                <span style="color: green;">Firmada</span>
+            {% else %}
+                <span style="color: red;">No firmada</span>
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="section-title">📦 Materiales Entregados</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Reparado por</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in detalles %}
+            <tr>
+                <td>{{ d.material.codigo }}</td>
+                <td>{{ d.material.descripcion }}</td>
+                <td>{{ d.cantidad }}</td>
+                <td>{{ d.reparado_por|default:"–" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if acta.firmada_por_tecnico %}
+    <div class="firma">
+        <div class="linea"></div>
+        <p>Firma del técnico</p>
+    </div>
+    {% endif %}
+
+</body>
+</html>

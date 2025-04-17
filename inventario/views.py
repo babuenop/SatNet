@@ -217,3 +217,45 @@ def firmar_acta(request, pk):
 def lista_actas(request):
     actas = ActaEntrega.objects.order_by('-id')
     return render(request, 'inventario/acta_listado.html', {'actas': actas})
+
+
+# inventario/views.py
+from django.http import HttpResponse
+from django.db.models import Count, Sum
+from .models import ActaEntrega, DetalleEntrega
+from collections import defaultdict
+
+def dashboard_actas(request):
+    # Filtramos actas válidas
+    actas = ActaEntrega.objects.exclude(fecha__isnull=True)
+
+    # Agrupamos manualmente por mes y año
+    resumen_por_mes = defaultdict(int)
+    for acta in actas:
+        clave = acta.fecha.strftime('%b %Y')  # Ej: 'Abr 2025'
+        resumen_por_mes[clave] += 1
+
+    entregas_labels = list(resumen_por_mes.keys())
+    entregas_data = list(resumen_por_mes.values())
+
+    materiales_top = (
+        DetalleEntrega.objects
+        .values('material__codigo', 'material__descripcion')
+        .annotate(cantidad_total=Sum('cantidad'))
+        .order_by('-cantidad_total')[:10]
+    )
+
+    tecnicos_top = (
+        ActaEntrega.objects
+        .values('tecnico__username')
+        .annotate(total=Count('id'))
+        .order_by('-total')[:5]
+    )
+
+    context = {
+        'entregas_labels': entregas_labels,
+        'entregas_data': entregas_data,
+        'materiales_top': materiales_top,
+        'tecnicos_top': tecnicos_top,
+    }
+    return render(request, 'inventario/dashboard_actas.html', context)

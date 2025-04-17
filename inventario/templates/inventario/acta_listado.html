@@ -29,15 +29,18 @@
             <span class="badge bg-warning text-dark">Pendiente</span>
           {% endif %}
         </td>
-        <td>
+        <td class="d-flex gap-1 flex-wrap">
           {% if not acta.firmada_por_tecnico %}
             <a class="btn btn-sm btn-primary"
                href="{% url 'inventario:detalle_acta' acta.id %}">✏️ Continuar</a>
           {% else %}
-            <a class="btn btn-sm btn-secondary"
-               href="{% url 'inventario:detalle_acta' acta.id %}">👁️ Ver</a>
+            
+            <a class="btn btn-sm btn-outline-dark"
+               href="{% url 'inventario:acta_pdf' acta.id %}" target="_blank">🖨️ Imprimir</a>
           {% endif %}
         </td>
+        
+
       </tr>
     {% empty %}
       <tr><td colspan="5" class="text-center">Sin actas registradas.</td></tr>
