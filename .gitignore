@@ -4,3 +4,17 @@ __pycache__/
 db.sqlite3
 /static/
 /media/
+
+# Ignorar entornos virtuales
+venv/
+ENV/
+env/
+*.egg-info/
+
+# Ignorar paquetes instalados
+**/site-packages/
+
+# Ignorar archivos binarios de librerías
+*.so
+*.dll
+*.dylib
