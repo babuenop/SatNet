@@ -1,0 +1,87 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+{% load form_extras %}
+
+{% block title %}Acta #{{ acta.id }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📜 Acta #{{ acta.id }}</h2>
+
+<div class="mb-3">
+  <strong>Técnico:</strong> {{ acta.tecnico }}<br>
+  <strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}<br>
+  <strong>Estado:</strong>
+  {% if acta.firmada_por_tecnico %}
+    <span class="badge bg-success">Firmada</span>
+  {% else %}
+    <span class="badge bg-warning text-dark">Sin firmar</span>
+  {% endif %}
+</div>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+{% if not modo_lectura %}
+<form method="post" class="row g-3 mb-4">
+  {% csrf_token %}
+
+  <div class="col-md-5">
+    <label for="material" class="form-label">Código de Material</label>
+    <input list="materiales-list" name="material" id="material" class="form-control" required>
+    <datalist id="materiales-list">
+      {% for m in materiales %}
+        <option value="{{ m.codigo }}">{{ m.codigo }} - {{ m.descripcion }}</option>
+      {% endfor %}
+    </datalist>
+  </div>
+  
+
+  <div class="col-md-3">
+    <label for="cantidad" class="form-label">Cantidad</label>
+    <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" required>
+  </div>
+
+  <div class="col-md-4 d-flex align-items-end">
+    <button type="submit" class="btn btn-primary w-100">Agregar a Acta</button>
+  </div>
+</form>
+{% endif %}
+
+<hr>
+<h5 class="mt-4">📦 Materiales Entregados:</h5>
+<table class="table table-bordered table-sm">
+  <thead class="table-light">
+    <tr>
+      <th>Código</th>
+      <th>Descripción</th>
+      <th>Cantidad</th>
+      <th>Reparado por</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in detalles %}
+      <tr>
+        <td>{{ item.material.codigo }}</td>
+        <td>{{ item.material.descripcion }}</td>
+        <td>{{ item.cantidad }}</td>
+        <td>{{ item.reparado_por }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4" class="text-center text-muted">Esta acta no tiene ítems registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if not modo_lectura and detalles %}
+<div class="mt-4 text-end">
+  <a href="{% url 'inventario:firmar_acta' acta.pk %}" class="btn btn-success">✅ Finalizar y firmar acta</a>
+</div>
+{% endif %}
+
+<div class="mt-4">
+  <a href="{% url 'inventario:lista_actas' %}" class="btn btn-secondary">← Volver al listado</a>
+</div>
+{% endblock %}

@@ -37,8 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'materiales',
+    'inventario',
 ]
+
+# Otras configuraciones...
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/inventario/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

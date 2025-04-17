@@ -1,0 +1,35 @@
+[
+{
+  "model": "inventario.material",
+  "pk": 5,
+  "fields": {
+    "codigo": "45056",
+    "descripcion": "aaa",
+    "proveedor": "aa",
+    "estado": "usado",
+    "stock": 0,
+    "unidad": "und",
+    "created_at": "2025-04-17T14:43:54.655Z",
+    "updated_at": "2025-04-17T14:43:54.655Z"
+  }
+},
+{
+  "model": "inventario.actaentrega",
+  "pk": 29,
+  "fields": {
+    "fecha": "2025-04-17",
+    "tecnico": 1,
+    "firmada_por_tecnico": false
+  }
+},
+{
+  "model": "inventario.detalleentrega",
+  "pk": 25,
+  "fields": {
+    "acta": 29,
+    "material": 5,
+    "cantidad": 11,
+    "reparado_por": 1
+  }
+}
+]

@@ -1,0 +1,12 @@
+{% extends "inventario/base.html" %}
+{% block title %}Confirmar Eliminación{% endblock %}
+
+{% block content %}
+<h2>¿Eliminar Material?</h2>
+<p>¿Estás seguro que deseas eliminar <strong>{{ material }}</strong>?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+  <a href="{% url 'inventario:lista_materiales' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "inventario/base.html" %}
+{% load form_extras %}
+
+{% block title %}Formulario de Material{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Formulario de Material</h2>
+
+<form method="post" class="row g-3">
+  {% csrf_token %}
+
+  <div class="col-md-6">
+    <label for="id_codigo" class="form-label">Código</label>
+    {{ form.codigo|add_class:"form-control" }}
+  </div>
+
+  <div class="col-md-6">
+    <label for="id_descripcion" class="form-label">Descripción</label>
+    {{ form.descripcion|add_class:"form-control" }}
+  </div>
+
+  <div class="col-md-6">
+    <label for="id_proveedor" class="form-label">Proveedor</label>
+    {{ form.proveedor|add_class:"form-control" }}
+  </div>
+
+  <div class="col-md-6">
+    <label for="id_estado" class="form-label">Estado</label>
+    {{ form.estado|add_class:"form-select" }}
+  </div>
+
+  <div class="col-md-4">
+    <label for="id_stock" class="form-label">Stock</label>
+    {{ form.stock|add_class:"form-control" }}
+  </div>
+
+  <div class="col-md-4">
+    <label for="id_unidad" class="form-label">Unidad</label>
+    {{ form.unidad|add_class:"form-control" }}
+  </div>
+
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'inventario:lista_materiales' %}" class="btn btn-secondary">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

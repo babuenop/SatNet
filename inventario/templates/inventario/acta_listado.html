@@ -1,0 +1,47 @@
+{% extends "inventario/base.html" %}
+
+{% block title %}Actas Registradas{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Actas Registradas</h1>
+<a class="btn btn-success mb-3" href="{% url 'inventario:registrar_acta' %}">➕ Nueva Entrega</a>
+
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Técnico</th>
+      <th>Fecha</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for acta in actas %}
+      <tr>
+        <td>{{ acta.id }}</td>
+        <td>{{ acta.tecnico }}</td>
+        <td>{{ acta.fecha }}</td>
+        <td>
+          {% if acta.firmada_por_tecnico %}
+            <span class="badge bg-success">Firmada</span>
+          {% else %}
+            <span class="badge bg-warning text-dark">Pendiente</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if not acta.firmada_por_tecnico %}
+            <a class="btn btn-sm btn-primary"
+               href="{% url 'inventario:detalle_acta' acta.id %}">✏️ Continuar</a>
+          {% else %}
+            <a class="btn btn-sm btn-secondary"
+               href="{% url 'inventario:detalle_acta' acta.id %}">👁️ Ver</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5" class="text-center">Sin actas registradas.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

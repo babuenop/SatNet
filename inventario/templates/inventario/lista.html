@@ -1,0 +1,37 @@
+{% extends "inventario/base.html" %}
+
+{% block title %}Materiales{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Materiales</h1>
+<a class="btn btn-success mb-3" href="{% url 'inventario:crear_material' %}">➕ Nuevo Material</a>
+
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Código</th>
+      <th>Descripción</th>
+      <th>Stock</th>
+      <th>Unidad</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for material in materiales %}
+      <tr>
+        <td>{{ material.codigo }}</td>
+        <td>{{ material.descripcion }}</td>
+        <td>{{ material.stock }}</td>
+        <td>{{ material.unidad }}</td>
+        <td>
+          <a class="btn btn-sm btn-primary" href="{% url 'inventario:editar_material' material.pk %}">✏️</a>
+          <a class="btn btn-sm btn-danger" href="{% url 'inventario:eliminar_material' material.pk %}">🗑️</a>
+        
+        </td>
+        
+        
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
