@@ -1,3 +1,5 @@
+{% load filters %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -99,10 +101,18 @@
         <p><strong>Responsable:</strong> {{ acta.tecnico }}</p>
         <p><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</p>
         <p><strong>Estado:</strong>
-            {% if acta.firmada_por_tecnico %}
-                <span style="color: green;">Firmada</span>
-            {% else %}
+            {% if not acta.firmada_por_tecnico %}
                 <span style="color: red; font-weight: bold; text-transform: uppercase;">No firmada</span>
+            {% elif aprobaciones.tecnico.estado == 'rechazado' or aprobaciones.supervisor.estado == 'rechazado' or aprobaciones.seguridad.estado == 'rechazado' or aprobaciones.almacen.estado == 'rechazado' %}
+                <span style="color: red; font-weight: bold;">❌ Rechazada</span>
+            {% elif aprobaciones.supervisor.estado != 'aprobado' %}
+                <span style="color: orange;">🔄 Esperando aprobación del supervisor</span>
+            {% elif aprobaciones.seguridad.estado != 'aprobado' %}
+                <span style="color: orange;">🔄 Validación de seguridad pendiente</span>
+            {% elif aprobaciones.almacen.estado != 'aprobado' %}
+                <span style="color: orange;">🛆 En espera de recepción en almacén</span>
+            {% else %}
+                <span style="color: green; font-weight: bold;">✅ Aprobada completamente</span>
             {% endif %}
         </p>
     </div>
@@ -130,12 +140,48 @@
         </tbody>
     </table>
 
-    {% if acta.firmada_por_tecnico %}
-    <div class="firma">
-        <div class="linea"></div>
-        <p>Firma del técnico</p>
-    </div>
-    {% endif %}
+    <h4 style="margin-top: 30px; color: #1a237e;">✍️ Firmas de Aprobación</h4>
+
+    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 10px;">
+      <thead>
+        <tr style="background-color: #f0f0f0;">
+          <th style="border: 1px solid #ccc; padding: 6px;">Etapa</th>
+          <th style="border: 1px solid #ccc; padding: 6px;">Firmado por</th>
+          <th style="border: 1px solid #ccc; padding: 6px;">Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tipo in etapas %}
+          <tr>
+            <td style="border: 1px solid #ccc; padding: 6px;">{{ tipo|capfirst }}</td>
+            {% with ap=aprobaciones|get_item:tipo %}
+              {% if ap %}
+                {% if ap.estado == 'aprobado' %}
+                  <td style="border: 1px solid #ccc; padding: 6px;">
+                    {{ ap.usuario.get_full_name|default:ap.usuario.username }}
+                  </td>
+                  <td style="border: 1px solid #ccc; padding: 6px;">
+                    {{ ap.fecha|date:"d/m/Y H:i" }}
+                  </td>
+                {% else %}
+                  <td colspan="2" style="border: 1px solid #ccc; padding: 6px; color: #888;">
+                    {{ ap.estado|capfirst }} (sin firma)
+                  </td>
+                {% endif %}
+              {% else %}
+                <td colspan="2" style="border: 1px solid #ccc; padding: 6px; color: #888;">
+                  Pendiente
+                </td>
+              {% endif %}
+            {% endwith %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p style="font-size: 10px; margin-top: 40px; text-align: center; color: #888;">
+      Documento generado automáticamente por el sistema SATNET el {{ acta.fecha|date:"d/m/Y" }}.
+    </p>
 
 </body>
 </html>

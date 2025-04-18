@@ -1,13 +1,71 @@
+{% load filters %}
 
-<div class="timeline">
-    {% for tipo, estado in aprobaciones.items %}
-      <div class="timeline-item">
-        <strong>{{ tipo|capfirst }}:</strong>
-        {{ estado.estado|capfirst }}
-        {% if estado.comentario %}
-          <div class="text-muted small">{{ estado.comentario }}</div>
+<h4 class="mt-4 text-primary">✍️ Firmas de Aprobación</h4>
+
+<table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 10px;">
+  <thead>
+    <tr style="background-color: #f0f0f0;">
+      <th style="border: 1px solid #ccc; padding: 6px;">Etapa</th>
+      <th style="border: 1px solid #ccc; padding: 6px;">Firmado por</th>
+      <th style="border: 1px solid #ccc; padding: 6px;">Fecha</th>
+      <th style="border: 1px solid #ccc; padding: 6px;">Comentario</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for tipo, ap in aprobaciones.items %}
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 6px;">{{ tipo|capfirst }}</td>
+
+      {% if ap %}
+        {% if ap.estado == 'aprobado' %}
+          <td style="border: 1px solid #ccc; padding: 6px;">
+            {{ ap.usuario.get_full_name|default:ap.usuario.username }}
+          </td>
+          <td style="border: 1px solid #ccc; padding: 6px;">
+            {{ ap.fecha|date:"d/m/Y H:i" }}
+          </td>
+          <td style="border: 1px solid #ccc; padding: 6px;">{{ ap.comentario|default:"—" }}</td>
+        {% else %}
+          <td colspan="2" style="border: 1px solid #ccc; padding: 6px; color: #888;">
+            {{ ap.estado|capfirst }} (sin firma)
+          </td>
+          <td style="border: 1px solid #ccc; padding: 6px;">{{ ap.comentario|default:"—" }}</td>
         {% endif %}
-      </div>
+      {% else %}
+        <td colspan="2" style="border: 1px solid #ccc; padding: 6px; color: #888;">Pendiente</td>
+        <td style="border: 1px solid #ccc; padding: 6px;">—</td>
+      {% endif %}
+    </tr>
     {% endfor %}
-  </div>
-  
+  </tbody>
+</table>
+
+{# Mostrar los botones de aprobación si corresponde al usuario #}
+{% if tipo_aprobador in etapas %}
+  {% with ap=aprobaciones|get_item:tipo_aprobador %}
+    {% if not ap or ap.estado == 'pendiente' %}
+      <div class="card mt-4 shadow-sm border-0">
+        <div class="card-body">
+          <h5 class="mb-3 text-primary">¿Deseas aprobar esta acta como {{ tipo_aprobador|capfirst }}?</h5>
+          <form method="post" action="{% url 'aprobaciones:aprobar' tipo_aprobador 'inventario' 'actaentrega' acta.id %}?next={{ request.path }}" class="mb-2">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="comentario_aprobar" class="form-label">Comentario (opcional)</label>
+              <textarea name="comentario" id="comentario_aprobar" rows="2" class="form-control" placeholder="Escribe un comentario..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-sm">✅ Aprobar</button>
+          </form>
+
+          <form method="post" action="{% url 'aprobaciones:rechazar' tipo_aprobador 'inventario' 'actaentrega' acta.id %}?next={{ request.path }}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="comentario_rechazar" class="form-label">Comentario (opcional)</label>
+              <textarea name="comentario" id="comentario_rechazar" rows="2" class="form-control" placeholder="Escribe un motivo del rechazo..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger btn-sm">❌ Rechazar</button>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+  {% endwith %}
+{% endif %}

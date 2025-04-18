@@ -98,14 +98,27 @@
     <img src="{% static 'img/logo.jpg' %}" alt="Logo SATNET" class="logo">
 
     {% if user.is_authenticated %}
-    <div class="user-info">
-      <span class="text-dark small"><i class="bi bi-person-circle me-1"></i> {{ user.username }}</span>
+    <div class="d-flex align-items-center gap-3">
+      <span class="text-dark small">
+        <i class="bi bi-person-circle me-1"></i> {{ user.username }}
+      </span>
+  
+      <a href="{% url 'aprobaciones:mis_aprobaciones' %}" class="position-relative text-dark text-decoration-none">
+        <i class="bi bi-bell-fill fs-5"></i>
+        {% if aprobaciones_pendientes_count > 0 %}
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ aprobaciones_pendientes_count }}
+          </span>
+        {% endif %}
+      </a>
+  
       <form action="{% url 'logout' %}" method="post" class="d-inline">
         {% csrf_token %}
         <button type="submit" class="btn btn-sm btn-outline-secondary">Cerrar sesión</button>
       </form>
     </div>
-    {% endif %}
+  {% endif %}
+  
   </div>
 
   <div class="wrapper">

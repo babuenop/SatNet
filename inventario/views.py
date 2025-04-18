@@ -2,6 +2,21 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ActaEntrega, DetalleEntrega, Material, User
+from django.contrib.contenttypes.models import ContentType
+from aprobaciones.models import Aprobacion
+
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.contenttypes.models import ContentType
+
+from inventario.models import ActaEntrega, Material, DetalleEntrega
+from aprobaciones.models import Aprobacion
+from aprobaciones.utils import etapas_previas, FLUJO_ETAPAS
+from aprobaciones.helpers import obtener_dict_aprobaciones  # si tienes esta función
+
+
+
 from .forms import MaterialForm
 from django.db.models import Q
 from django.contrib.auth.models import User  # Usuario por defecto de Django
@@ -114,24 +129,41 @@ def registrar_acta(request):
 
 
 
-
 @login_required
 def detalle_acta(request, pk):
-    acta = get_object_or_404(ActaEntrega, pk=pk, tecnico=request.user)
+    acta = get_object_or_404(ActaEntrega, pk=pk)
     materiales = Material.objects.filter(activo=True).order_by('descripcion')
+    detalles = acta.detalles.select_related('material', 'reparado_por')
+    tipo_aprobador = request.GET.get("tipo")
 
-    if request.method == 'POST':
+    puede_editar = request.user == acta.tecnico and not acta.firmada_por_tecnico
+
+    # 👇 Validación para permitir mostrar el formulario de aprobación
+    puede_aprobar = False
+    if tipo_aprobador in FLUJO_ETAPAS and acta.firmada_por_tecnico and detalles.exists():
+        puede_aprobar = True
+        content_type = ContentType.objects.get_for_model(acta)
+        for etapa in etapas_previas(tipo_aprobador):
+            if not Aprobacion.objects.filter(
+                tipo=etapa,
+                content_type=content_type,
+                object_id=acta.id,
+                estado='aprobado'
+            ).exists():
+                puede_aprobar = False
+                break
+
+    # 👇 Lógica para agregar materiales a la acta
+    if request.method == 'POST' and puede_editar:
         codigo = request.POST.get('material')
         cantidad = request.POST.get('cantidad')
 
-        # Validar que exista el código de material
         try:
             material = Material.objects.get(codigo=codigo)
         except Material.DoesNotExist:
             messages.error(request, "⚠️ El código ingresado no corresponde a ningún material.")
             return redirect('inventario:detalle_acta', pk=pk)
 
-        # Validar cantidad
         try:
             cantidad = int(cantidad)
             if cantidad <= 0:
@@ -140,7 +172,6 @@ def detalle_acta(request, pk):
             messages.error(request, "⚠️ Debes ingresar una cantidad válida.")
             return redirect('inventario:detalle_acta', pk=pk)
 
-        # Crear ítem
         DetalleEntrega.objects.create(
             acta=acta,
             material=material,
@@ -150,15 +181,39 @@ def detalle_acta(request, pk):
         messages.success(request, "✅ Material agregado a la acta.")
         return redirect('inventario:detalle_acta', pk=pk)
 
-    # GET: mostrar formulario
-    detalles = acta.detalles.select_related('material', 'reparado_por')
+    return render(request, "inventario/acta_base.html", {
+        "acta": acta,
+        "detalles": detalles,
+        "materiales": materiales,
+        "tipo_aprobador": tipo_aprobador,
+        "etapas": FLUJO_ETAPAS,
+        "puede_editar": puede_editar,
+        "puede_aprobar": puede_aprobar,
+        "aprobaciones": obtener_dict_aprobaciones(acta),
+    })
+
+
+    # Aprobaciones solo si ya fue firmada
+    aprobaciones = {}
+    etapas = ["tecnico", "supervisor", "seguridad", "almacen"]
+    if acta.firmada_por_tecnico:
+        content_type = ContentType.objects.get_for_model(acta)
+        aprobaciones = {
+            a.tipo: a for a in Aprobacion.objects.filter(content_type=content_type, object_id=acta.id)
+        }
+
+
 
     return render(request, 'inventario/acta_base.html', {
         'acta': acta,
         'materiales': materiales,
         'detalles': detalles,
-        'modo_lectura': False,
+        'modo_lectura': not puede_editar,
+        'aprobaciones': aprobaciones,
+        'etapas': etapas,
+        'tipo_aprobador': tipo_aprobador,
     })
+
 
 
 
@@ -221,13 +276,25 @@ def firmar_acta(request, pk):
         messages.warning(request, "❌ No puedes firmar un acta sin materiales.")
         return redirect('inventario:detalle_acta', pk=pk)
 
+    # Marcar como firmada
     acta.firmada_por_tecnico = True
     acta.save()
 
-    messages.success(request, f"✅ Acta #{pk} firmada exitosamente.")
+    # Registrar la "aprobación técnica"
+    content_type = ContentType.objects.get_for_model(acta)
+    Aprobacion.objects.update_or_create(
+        content_type=content_type,
+        object_id=acta.id,
+        tipo='tecnico',
+        defaults={
+            'estado': 'aprobado',
+            'comentario': 'Acta completada por el técnico.',
+            'usuario': request.user,
+        }
+    )
+
+    messages.success(request, f"✅ Acta #{pk} firmada exitosamente. Se ha registrado como completada por el técnico.")
     return redirect('inventario:detalle_acta', pk=pk)
-
-
 
 
 
@@ -241,35 +308,55 @@ def lista_actas(request):
     actas = ActaEntrega.objects.select_related('tecnico').prefetch_related('detalles', 'detalles__material').order_by('-id')
 
     tecnico_id = request.GET.get('tecnico')
-    estado = request.GET.get('estado')
+    estado_filtro = request.GET.get('estado')
     fecha_desde = request.GET.get('fecha_desde')
     fecha_hasta = request.GET.get('fecha_hasta')
 
     if tecnico_id:
         actas = actas.filter(tecnico_id=tecnico_id)
 
-    if estado == 'firmada':
-        actas = actas.filter(firmada_por_tecnico=True)
-    elif estado == 'pendiente':
-        actas = actas.filter(firmada_por_tecnico=False)
-
     if fecha_desde:
         actas = actas.filter(fecha__gte=parse_date(fecha_desde))
     if fecha_hasta:
         actas = actas.filter(fecha__lte=parse_date(fecha_hasta))
 
-    tecnico_ids = actas.values_list('tecnico_id', flat=True).distinct()
+    # Calculamos y anotamos estado_actual
+    actas_list = list(actas)  # convertimos queryset para poder iterar y modificar
+    for acta in actas_list:
+        acta.estado_actual = obtener_estado_acta(acta)
+
+    # Filtrado por estado dinámico
+    if estado_filtro:
+        actas_list = [a for a in actas_list if a.estado_actual == estado_filtro]
+
+    tecnico_ids = [a.tecnico_id for a in actas_list]
     tecnicos = User.objects.filter(id__in=tecnico_ids)
 
     return render(request, 'inventario/acta_listado.html', {
-        'actas': actas,
+        'actas': actas_list,
         'tecnicos': tecnicos,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
+        'estado': estado_filtro,  # para mantener seleccionado el filtro
     })
 
 
 
+
+def obtener_estado_acta(acta):
+    if not acta.firmada_por_tecnico:
+        return 'pendiente'
+
+    content_type = ContentType.objects.get_for_model(acta)
+    aprobaciones = {
+        a.tipo: a.estado for a in Aprobacion.objects.filter(content_type=content_type, object_id=acta.id)
+    }
+
+    if 'rechazado' in aprobaciones.values():
+        return 'rechazada'
+    elif all(aprobaciones.get(k) == 'aprobado' for k in ['tecnico', 'supervisor', 'seguridad', 'almacen']):
+        return 'aprobada'
+    return 'en_aprobacion'
 
 # inventario/views.py
 from django.http import HttpResponse

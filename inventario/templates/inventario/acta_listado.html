@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load filters %}
 
 {% block title %}Actas Registradas{% endblock %}
 
@@ -23,10 +24,13 @@
     <label class="form-label mb-0 small">Estado</label>
     <select name="estado" class="form-select form-select-sm">
       <option value="">Todos</option>
-      <option value="firmada" {% if request.GET.estado == 'firmada' %}selected{% endif %}>Firmadas</option>
-      <option value="pendiente" {% if request.GET.estado == 'pendiente' %}selected{% endif %}>Pendientes</option>
+      <option value="pendiente" {% if request.GET.estado == 'pendiente' %}selected{% endif %}>No firmadas</option>
+      <option value="en_aprobacion" {% if request.GET.estado == 'en_aprobacion' %}selected{% endif %}>En aprobación</option>
+      <option value="aprobada" {% if request.GET.estado == 'aprobada' %}selected{% endif %}>Aprobadas</option>
+      <option value="rechazada" {% if request.GET.estado == 'rechazada' %}selected{% endif %}>Rechazadas</option>
     </select>
   </div>
+  
 
   <div class="col-auto">
     <label class="form-label mb-0 small">Desde</label>
@@ -72,23 +76,39 @@
           <td>{{ detalle.material.descripcion }}</td>
           <td>{{ detalle.cantidad }}</td>
           <td>
-            {% if acta.firmada_por_tecnico %}
-              <span class="badge bg-success">Firmada</span>
+            {% if acta.estado_actual == 'aprobada' %}
+            <span class="badge bg-success">✅ Aprobada</span>
+            {% elif acta.estado_actual == 'rechazada' %}
+            <span class="badge bg-danger">❌ Rechazada</span>
+            {% elif acta.estado_actual == 'en_aprobacion' %}
+            <span class="badge bg-warning text-dark">⏳ En aprobación</span>
             {% else %}
-              <span class="badge bg-warning text-dark">Pendiente</span>
-            {% endif %}
+            <span class="badge bg-secondary">📝 Sin firmar</span>
+            {% endif %}              
           </td>
           <td class="d-flex gap-1 flex-wrap">
+
+            {# Botón para editar (si no está firmada) #}
             {% if not acta.firmada_por_tecnico %}
-              <a href="{% url 'inventario:detalle_acta' acta.id %}" class="badge text-bg-primary text-decoration-none">
+              <a href="{% url 'inventario:detalle_acta' acta.id %}" class="badge text-bg-primary text-decoration-none" title="Editar acta">
                 ✏️
               </a>
-            {% else %}
-              <a href="{% url 'inventario:acta_pdf' acta.id %}" target="_blank" class="badge text-bg-dark text-decoration-none">
+            {% endif %}
+          
+            {# Botón para PDF (si ya está firmada) #}
+            {% if acta.firmada_por_tecnico %}
+              <a href="{% url 'inventario:acta_pdf' acta.id %}" target="_blank" class="badge text-bg-dark text-decoration-none" title="Ver PDF">
                 🖨️
               </a>
             {% endif %}
+          
+            {# Botón para ver siempre #}
+            <a href="{% url 'inventario:detalle_acta' acta.id %}" class="badge text-bg-secondary text-decoration-none" title="Ver acta">
+              👁️
+            </a>
+          
           </td>
+          
         </tr>
       {% endfor %}
     {% empty %}

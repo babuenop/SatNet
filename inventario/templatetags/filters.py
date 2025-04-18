@@ -14,3 +14,7 @@ def map(queryset, attr):
         fmt = fmt.replace('date:\"', '').replace('\"', '')
         return [getattr(obj, field).strftime(fmt) if getattr(obj, field) else '' for obj in queryset]
     return [getattr(obj, attr) for obj in queryset]
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
