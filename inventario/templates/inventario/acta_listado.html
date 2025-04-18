@@ -1,50 +1,104 @@
-{% extends "inventario/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}Actas Registradas{% endblock %}
 
 {% block content %}
 <h1 class="mb-4">Actas Registradas</h1>
-<a class="btn btn-success mb-3" href="{% url 'inventario:registrar_acta' %}">➕ Nueva Entrega</a>
 
-<table class="table table-bordered table-hover">
+{% comment %} Filtrar Actas {% endcomment %}
+<form method="get" class="row g-2 mb-3 align-items-end">
+  <div class="col-auto">
+    <label class="form-label mb-0 small">Técnico</label>
+    <select name="tecnico" class="form-select form-select-sm">
+      <option value="">Todos</option>
+      {% for tecnico in tecnicos %}
+        <option value="{{ tecnico.id }}" {% if request.GET.tecnico == tecnico.id|stringformat:"s" %}selected{% endif %}>
+          {{ tecnico.get_full_name|default:tecnico.username }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-auto">
+    <label class="form-label mb-0 small">Estado</label>
+    <select name="estado" class="form-select form-select-sm">
+      <option value="">Todos</option>
+      <option value="firmada" {% if request.GET.estado == 'firmada' %}selected{% endif %}>Firmadas</option>
+      <option value="pendiente" {% if request.GET.estado == 'pendiente' %}selected{% endif %}>Pendientes</option>
+    </select>
+  </div>
+
+  <div class="col-auto">
+    <label class="form-label mb-0 small">Desde</label>
+    <input type="date" name="fecha_desde" class="form-control form-control-sm"
+           value="{{ fecha_desde }}">
+  </div>
+
+  <div class="col-auto">
+    <label class="form-label mb-0 small">Hasta</label>
+    <input type="date" name="fecha_hasta" class="form-control form-control-sm"
+           value="{{ fecha_hasta }}">
+  </div>
+
+  <div class="col-auto">
+    <button type="submit" class="btn btn-sm btn-outline-primary">🔍 Filtrar</button>
+  </div>
+</form>
+
+
+
+{% comment %} Listado de Actas {% endcomment %}
+<table class="table table-sm table-bordered align-middle small">
   <thead class="table-light">
     <tr>
       <th>#</th>
       <th>Técnico</th>
       <th>Fecha</th>
+      <th>Código</th>
+      <th>Descripción</th>
+      <th>Cantidad</th>
       <th>Estado</th>
       <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
     {% for acta in actas %}
-      <tr>
-        <td>{{ acta.id }}</td>
-        <td>{{ acta.tecnico }}</td>
-        <td>{{ acta.fecha }}</td>
-        <td>
-          {% if acta.firmada_por_tecnico %}
-            <span class="badge bg-success">Firmada</span>
-          {% else %}
-            <span class="badge bg-warning text-dark">Pendiente</span>
-          {% endif %}
-        </td>
-        <td class="d-flex gap-1 flex-wrap">
-          {% if not acta.firmada_por_tecnico %}
-            <a class="btn btn-sm btn-primary"
-               href="{% url 'inventario:detalle_acta' acta.id %}">✏️ Continuar</a>
-          {% else %}
-            
-            <a class="btn btn-sm btn-outline-dark"
-               href="{% url 'inventario:acta_pdf' acta.id %}" target="_blank">🖨️ Imprimir</a>
-          {% endif %}
-        </td>
-        
-
-      </tr>
+      {% for detalle in acta.detalles.all %}
+        <tr>
+          <td>{{ acta.id }}</td>
+          <td>{{ acta.tecnico }}</td>
+          <td>{{ acta.fecha }}</td>
+          <td>{{ detalle.material.codigo }}</td>
+          <td>{{ detalle.material.descripcion }}</td>
+          <td>{{ detalle.cantidad }}</td>
+          <td>
+            {% if acta.firmada_por_tecnico %}
+              <span class="badge bg-success">Firmada</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">Pendiente</span>
+            {% endif %}
+          </td>
+          <td class="d-flex gap-1 flex-wrap">
+            {% if not acta.firmada_por_tecnico %}
+              <a href="{% url 'inventario:detalle_acta' acta.id %}" class="badge text-bg-primary text-decoration-none">
+                ✏️
+              </a>
+            {% else %}
+              <a href="{% url 'inventario:acta_pdf' acta.id %}" target="_blank" class="badge text-bg-dark text-decoration-none">
+                🖨️
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
     {% empty %}
-      <tr><td colspan="5" class="text-center">Sin actas registradas.</td></tr>
+      <tr>
+        <td colspan="8" class="text-center">Sin actas registradas.</td>
+      </tr>
     {% endfor %}
   </tbody>
 </table>
+
+
+
 {% endblock %}

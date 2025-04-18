@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ documento.titulo }}</h2>
+<p>{{ documento.descripcion }}</p>
+
+<h5>Estado de Aprobaciones</h5>
+{% include "aprobaciones/_timeline.html" with aprobaciones=aprobaciones %}
+
+<form method="post" action="{% url 'aprobaciones:aprobar' 'supervisor' 'demo' 'documentodemo' documento.id %}?next={{ request.path }}">
+  {% csrf_token %}
+  <textarea name="comentario" rows="2" class="form-control my-2" placeholder="Comentario..."></textarea>
+  <button type="submit" class="btn btn-success btn-sm">Aprobar como Supervisor</button>
+</form>
+
+<form method="post" action="{% url 'aprobaciones:rechazar' 'supervisor' 'demo' 'documentodemo' documento.id %}?next={{ request.path }}">
+  {% csrf_token %}
+  <textarea name="comentario" rows="2" class="form-control my-2" placeholder="Comentario..."></textarea>
+  <button type="submit" class="btn btn-danger btn-sm">Rechazar como Supervisor</button>
+</form>
+{% endblock %}

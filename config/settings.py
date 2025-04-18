@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-r2gq!mqld%$g7@0%(p!mp4&%f*!l=yz5y%f6iicowo&3r5qvd@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
 
 # Application definition
 STATIC_URL = '/static/'
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'inventario',
+    'aprobaciones',
+    'demo',
 ]
 
 # Otras configuraciones...
@@ -67,7 +70,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / "templates" ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

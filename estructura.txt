@@ -1,0 +1,129 @@
+.
+├── README.md
+├── config
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── estructura.txt
+├── inventario
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── fixtures
+│   │   ├── inicial.json
+│   │   └── manage.py
+│   ├── forms.py
+│   ├── management
+│   │   └── commands
+│   ├── models.py
+│   ├── templates
+│   │   ├── actas
+│   │   ├── inventario
+│   │   └── registration
+│   ├── templatetags
+│   │   ├── __init__.py
+│   │   ├── filters.py
+│   │   ├── form_extras.py
+│   │   └── form_tags.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── views.py
+│   └── views_actas.py
+├── legacy
+│   ├── Entregas
+│   │   ├── AgregarMaterial.php
+│   │   ├── CrearActa.php
+│   │   ├── Editar.php
+│   │   ├── EditarActa.php
+│   │   ├── IraActa.php
+│   │   ├── index.php
+│   │   ├── php
+│   │   └── reportes
+│   ├── Materiales
+│   │   ├── ConsultarMaterial.php
+│   │   ├── CrearMaterial.php
+│   │   ├── EditaMaterial.php
+│   │   ├── index.php
+│   │   └── php
+│   ├── Memorias
+│   │   ├── ConsultarMaterial.php
+│   │   ├── EditaMaterial.php
+│   │   ├── Index.php
+│   │   └── php
+│   ├── OutOfService
+│   │   └── Resumen.php
+│   ├── css
+│   │   ├── bootstrap-theme.css
+│   │   ├── bootstrap-theme.css.map
+│   │   ├── bootstrap-theme.min.css
+│   │   ├── bootstrap-theme.min.css.map
+│   │   ├── bootstrap.css
+│   │   ├── bootstrap.css.map
+│   │   ├── bootstrap.min.css
+│   │   └── bootstrap.min.css.map
+│   ├── db
+│   │   ├── NewTables.sql
+│   │   ├── satnet(2).sql
+│   │   └── satnet.sql
+│   ├── fonts
+│   │   ├── glyphicons-halflings-regular.eot
+│   │   ├── glyphicons-halflings-regular.svg
+│   │   ├── glyphicons-halflings-regular.ttf
+│   │   ├── glyphicons-halflings-regular.woff
+│   │   └── glyphicons-halflings-regular.woff2
+│   ├── img
+│   │   ├── 1.pdf
+│   │   ├── Loading.gif
+│   │   ├── del.png
+│   │   ├── edit.png
+│   │   ├── logo.jpg
+│   │   ├── logo1.jpg
+│   │   ├── maintenance.png
+│   │   ├── memorias.jpg
+│   │   ├── print.png
+│   │   ├── repuestos.jpg
+│   │   ├── salidas.jpg
+│   │   ├── search.png
+│   │   ├── stocks.jpg
+│   │   └── índice.jpg
+│   ├── index.php
+│   ├── js
+│   │   ├── bootstrap.js
+│   │   ├── bootstrap.min.js
+│   │   ├── jquery-1.9.1.min.js
+│   │   ├── jquery-3.1.1.js
+│   │   ├── jquery-3.1.1.min.js
+│   │   ├── jquery.dataTables.min.css
+│   │   ├── jquery.dataTables.min.js
+│   │   └── npm.js
+│   ├── lib
+│   │   └── pdf
+│   ├── php
+│   │   ├── AgregarMaterial.php
+│   │   ├── BorrarMaterial.php
+│   │   ├── EditarMaterial.php
+│   │   ├── conexion.php
+│   │   ├── crearActa.php
+│   │   └── navbar.php
+│   ├── reportes
+│   │   └── ImprimirActa.php
+│   ├── sql
+│   │   ├── tbl_fueradeservicio.sql
+│   │   └── tbl_maquinas.sql
+│   └── values
+│       ├── Categorias.php
+│       ├── Estado.php
+│       ├── Proveedores.php
+│       ├── TipoMemorias.php
+│       └── Ubicaciones.php
+├── manage.py
+├── requirements.txt
+├── static
+│   └── img
+│       └── logo.jpg
+└── templates
+    └── base.html
+
+34 directories, 93 files

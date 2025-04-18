@@ -1,10 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import ActaEntrega, DetalleEntrega, Material
+from .models import ActaEntrega, DetalleEntrega, Material, User
 from .forms import MaterialForm
-
+from django.db.models import Q
+from django.contrib.auth.models import User  # Usuario por defecto de Django
 
 
 # ---------- CRUD MATERIALES ----------
@@ -64,8 +64,6 @@ def eliminar_material(request, pk):
 
 # inventario/views.py
 
-from django.contrib import messages
-from django.shortcuts import get_object_or_404
 
 @login_required
 def registrar_acta(request):
@@ -192,6 +190,24 @@ def agregar_detalle(request, pk):
 
     return redirect('inventario:detalle_acta', pk=pk)
 
+@login_required
+def eliminar_item_acta(request, item_id):
+    item = get_object_or_404(
+        DetalleEntrega,
+        id=item_id,
+        acta__tecnico=request.user,
+        acta__firmada_por_tecnico=False
+    )
+
+    if request.method == 'POST':
+        acta_id = item.acta.id
+        item.delete()
+        messages.success(request, "🗑️ Material eliminado del acta.")
+        return redirect('inventario:detalle_acta', pk=acta_id)
+
+    return render(request, 'inventario/confirmar_eliminar_item.html', {'item': item})
+
+
 
 @login_required
 def firmar_acta(request, pk):
@@ -209,14 +225,50 @@ def firmar_acta(request, pk):
     acta.save()
 
     messages.success(request, f"✅ Acta #{pk} firmada exitosamente.")
-    return redirect('inventario:lista_actas')
+    return redirect('inventario:detalle_acta', pk=pk)
 
 
+
+
+
+
+from django.contrib.auth.models import User
+from django.utils.dateparse import parse_date
+from datetime import datetime
 
 @login_required
 def lista_actas(request):
-    actas = ActaEntrega.objects.order_by('-id')
-    return render(request, 'inventario/acta_listado.html', {'actas': actas})
+    actas = ActaEntrega.objects.select_related('tecnico').prefetch_related('detalles', 'detalles__material').order_by('-id')
+
+    tecnico_id = request.GET.get('tecnico')
+    estado = request.GET.get('estado')
+    fecha_desde = request.GET.get('fecha_desde')
+    fecha_hasta = request.GET.get('fecha_hasta')
+
+    if tecnico_id:
+        actas = actas.filter(tecnico_id=tecnico_id)
+
+    if estado == 'firmada':
+        actas = actas.filter(firmada_por_tecnico=True)
+    elif estado == 'pendiente':
+        actas = actas.filter(firmada_por_tecnico=False)
+
+    if fecha_desde:
+        actas = actas.filter(fecha__gte=parse_date(fecha_desde))
+    if fecha_hasta:
+        actas = actas.filter(fecha__lte=parse_date(fecha_hasta))
+
+    tecnico_ids = actas.values_list('tecnico_id', flat=True).distinct()
+    tecnicos = User.objects.filter(id__in=tecnico_ids)
+
+    return render(request, 'inventario/acta_listado.html', {
+        'actas': actas,
+        'tecnicos': tecnicos,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+    })
+
+
 
 
 # inventario/views.py

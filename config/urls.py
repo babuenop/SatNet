@@ -18,7 +18,12 @@ urlpatterns = [
     # Autenticación
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-
+    
+    # Aprobaciones
+    path('aprobaciones/', include('aprobaciones.urls')),
+    path('', include('demo.urls')),
+    
     # Ruta raíz
     path('', home),  # redirige a lista de materiales (u otra vista central)
+
 ]

@@ -1,0 +1,13 @@
+
+<div class="timeline">
+    {% for tipo, estado in aprobaciones.items %}
+      <div class="timeline-item">
+        <strong>{{ tipo|capfirst }}:</strong>
+        {{ estado.estado|capfirst }}
+        {% if estado.comentario %}
+          <div class="text-muted small">{{ estado.comentario }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  

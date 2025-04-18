@@ -19,6 +19,8 @@ urlpatterns = [
     path('actas/registrar/', views.registrar_acta, name='registrar_acta'),
     path("actas/<int:pk>/detalles/", views.detalle_acta, name="detalle_acta"),
     path("actas/<int:pk>/detalles/agregar/", views.agregar_detalle, name="agregar_detalle"),
+    path('actas/<int:item_id>/eliminar-item/', views.eliminar_item_acta, name='eliminar_item_acta'),
+
     path("actas/<int:pk>/firmar/", views.firmar_acta, name="firmar_acta"),
     path("actas/", views.lista_actas, name="lista_actas"),
 
