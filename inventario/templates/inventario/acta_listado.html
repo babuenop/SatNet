@@ -89,14 +89,14 @@
           <td class="d-flex gap-1 flex-wrap">
 
             {# Botón para editar (si no está firmada) #}
-            {% if not acta.firmada_por_tecnico %}
+            {% if not acta.cerrada_por_tecnico %}
               <a href="{% url 'inventario:detalle_acta' acta.id %}" class="badge text-bg-primary text-decoration-none" title="Editar acta">
                 ✏️
               </a>
             {% endif %}
           
             {# Botón para PDF (si ya está firmada) #}
-            {% if acta.firmada_por_tecnico %}
+            {% if acta.cerrada_por_tecnico %}
               <a href="{% url 'inventario:acta_pdf' acta.id %}" target="_blank" class="badge text-bg-dark text-decoration-none" title="Ver PDF">
                 🖨️
               </a>

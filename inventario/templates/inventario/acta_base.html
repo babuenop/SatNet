@@ -11,11 +11,26 @@
 <div class="card shadow-sm mb-3 border-0">
   <div class="card-body py-2 px-3 small">
     <div class="row">
-      <div class="col-md-4"><strong>Técnico:</strong> {{ acta.tecnico }}</div>
       <div class="col-md-4"><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</div>
+      <div class="col-md-4"><strong>Técnico:</strong> {{ acta.tecnico }}</div>
+      <div class="col-md-4"><strong>Tipo de acta:</strong> {{ acta.get_tipo_display }}</div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-8">
+        {% if acta.cerrada_por_tecnico %}
+          <p class="text-success mb-1">
+            ✅ Cerrada por <strong>{{ acta.cerrado_por.get_full_name|default:acta.cerrado_por.username }}</strong>
+            el <strong>{{ acta.cerrado_en|date:"d M Y H:i" }}</strong>
+          </p>
+        {% else %}
+          <p class="text-danger mb-1">⚠️ Acta no cerrada</p>
+        {% endif %}
+      </div>
+
       <div class="col-md-4">
         <strong>Estado:</strong>
-        {% if not acta.firmada_por_tecnico %}
+        {% if not acta.cerrada_por_tecnico %}
           <span class="badge bg-warning text-dark">Sin firmar</span>
         {% elif 'rechazado' in aprobaciones.values|join:" " %}
           <span class="badge bg-danger">❌ Rechazada</span>
@@ -55,7 +70,7 @@
 {% if acta.estado == 'rechazada' %}
   <div class="alert alert-info{% if acta.estado == 'rechazada' %} alert-danger fw-bold{% endif %}">
     <strong>Estado actual:</strong>
-    {% if not acta.firmada_por_tecnico %}
+    {% if not acta.cerrada_por_tecnico %}
       <span style="color: red; font-weight: bold;">❌ No firmada</span>
     
     {% elif aprobaciones.tecnico.estado == 'rechazado'
@@ -83,7 +98,7 @@
 
 {% if not modo_lectura and not tiene_aprobaciones %}
   {% if request.user.groups.first.name in "tecnico supervisor" %}
-    <form method="post" class="row gx-2 gy-2 align-items-end mb-4" style="max-width: 700px;">
+    <form method="post" action="{% url 'inventario:agregar_detalle' acta.id %}" class="row gx-2 gy-2 align-items-end mb-4">
       {% csrf_token %}
       <div class="col-md-5">
         <label for="material" class="form-label small">Código de Material</label>
@@ -115,7 +130,7 @@
         <th>Descripción</th>
         <th>Cantidad</th>
         <th>Reparado por</th>
-        {% if not acta.firmada_por_tecnico %}<th class="text-center">Acción</th>{% endif %}
+        {% if not acta.cerrada_por_tecnico %}<th class="text-center">Acción</th>{% endif %}
       </tr>
     </thead>
     <tbody class="small">
@@ -125,7 +140,7 @@
           <td>{{ item.material.descripcion }}</td>
           <td>{{ item.cantidad }}</td>
           <td>{{ item.reparado_por }}</td>
-          {% if not acta.firmada_por_tecnico %}
+          {% if not acta.cerrada_por_tecnico %}
           <td class="text-center">
             <form method="post" action="{% url 'inventario:eliminar_item_acta' item.id %}" style="display:inline;">
               {% csrf_token %}
@@ -144,11 +159,12 @@
   </table>
 </div>
 
-
-{# ✅ Timeline de firmas y formulario de aprobación (si aplica) #}
-{% if acta.estado != 'rechazada' %}
-  {% include "aprobaciones/_timeline.html" with aprobaciones=aprobaciones acta=acta puede_aprobar=puede_aprobar tipo_aprobador=tipo_aprobador etapa_actual=etapa_actual %}
+{% if acta.estado != 'rechazada' and tipo_aprobador != 'tecnico' %}
+  {% include "aprobaciones/_timeline.html" with aprobaciones=aprobaciones acta=acta puede_aprobar=puede_aprobar tipo_aprobador=tipo_aprobador etapa_actual=etapa_actual app_label=app_label model_name=model_name %}
+{% elif acta.estado != 'rechazada' and acta.cerrada_por_tecnico %}
+  {% include "aprobaciones/_timeline.html" with aprobaciones=aprobaciones acta=acta puede_aprobar=puede_aprobar tipo_aprobador=tipo_aprobador etapa_actual=etapa_actual app_label=app_label model_name=model_name %}
 {% endif %}
+
 
 {% if detalles %}
   <div class="card border-0 shadow-sm mt-4">
@@ -160,9 +176,9 @@
         🖨️ Vista previa PDF
       </a>
 
-      {% if not acta.firmada_por_tecnico and not modo_lectura %}
-        <a href="{% url 'inventario:firmar_acta' acta.pk %}" class="btn btn-success btn-sm">
-          ✅ Firmar y cerrar acta
+      {% if not acta.cerrada_por_tecnico and not modo_lectura %}
+        <a href="{% url 'inventario:cerrar_acta' acta.pk %}" class="btn btn-success btn-sm">
+          ✅ Cerrar acta
         </a>
       {% endif %}
 

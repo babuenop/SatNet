@@ -101,7 +101,7 @@
         <p><strong>Responsable:</strong> {{ acta.tecnico }}</p>
         <p><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</p>
         <p><strong>Estado:</strong>
-            {% if not acta.firmada_por_tecnico %}
+            {% if not acta.cerrada_por_tecnico %}
                 <span style="color: red; font-weight: bold; text-transform: uppercase;">No firmada</span>
             {% elif aprobaciones.tecnico.estado == 'rechazado' or aprobaciones.supervisor.estado == 'rechazado' or aprobaciones.seguridad.estado == 'rechazado' or aprobaciones.almacen.estado == 'rechazado' %}
                 <span style="color: red; font-weight: bold;">❌ Rechazada</span>

@@ -13,7 +13,7 @@ def aprobaciones_pendientes(request):
 
     count = 0
 
-    for acta in ActaEntrega.objects.filter(firmada_por_tecnico=True).exclude(estado='rechazada'):
+    for acta in ActaEntrega.objects.filter(cerrada_por_tecnico=True).exclude(estado='rechazada'):
         content_type = ContentType.objects.get_for_model(acta)
 
         aprobaciones = Aprobacion.objects.filter(

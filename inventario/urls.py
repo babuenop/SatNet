@@ -3,6 +3,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from . import views
 from .views_actas import acta_pdf
+from . import views_debug
 
 
 app_name = 'inventario'
@@ -20,8 +21,7 @@ urlpatterns = [
     path("actas/<int:pk>/detalles/", views.detalle_acta, name="detalle_acta"),
     path("actas/<int:pk>/detalles/agregar/", views.agregar_detalle, name="agregar_detalle"),
     path('actas/<int:item_id>/eliminar-item/', views.eliminar_item_acta, name='eliminar_item_acta'),
-
-    path("actas/<int:pk>/firmar/", views.firmar_acta, name="firmar_acta"),
+    path("actas/<int:pk>/cerrar/", views.cerrar_acta, name="cerrar_acta"),
     path("actas/", views.lista_actas, name="lista_actas"),
 
     # ---------- Autenticación ----------
@@ -33,6 +33,9 @@ urlpatterns = [
 
     # ---------- Reportes ----------    
     path('acta/<int:acta_id>/pdf/', acta_pdf, name='acta_pdf'),
+    
+      # 🧪 Ruta para cambiar usuario (modo prueba/debug)
+    path('debug/cambiar_usuario/<int:user_id>/', views_debug.cambiar_usuario, name='cambiar_usuario'),
 
 
 ]

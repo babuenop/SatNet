@@ -9,101 +9,67 @@
 
 <h6 class="text-primary fw-bold">✍️ Firmas de Aprobación</h6>
 
-<table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-top: 10px;">
-  <thead>
-    <tr style="background-color: #f0f0f0;">
-      <th style="border: 1px solid #ccc; padding: 6px;">Etapa</th>
-      <th style="border: 1px solid #ccc; padding: 6px;">Firmado por</th>
-      <th style="border: 1px solid #ccc; padding: 6px;">Fecha</th>
-      <th style="border: 1px solid #ccc; padding: 6px;">Comentario</th>
+{% comment %} Template: aprobaciones/_timeline.html {% endcomment %}
+<table class="table table-bordered table-sm small">
+  <thead class="table-light">
+    <tr>
+      <th style="width: 20%">Etapa</th>
+      <th style="width: 20%">Usuario</th>
+      <th style="width: 30%">Comentario</th>
+      <th style="width: 15%">Estado</th>
+      <th style="width: 15%">Fecha</th>
     </tr>
   </thead>
   <tbody>
     {% for tipo in etapas %}
-      {% with ap=aprobaciones|get_item:tipo %}
-        <tr>
-          <td style="border: 1px solid #ccc; padding: 6px;">{{ tipo|capfirst }}</td>
-
-          {% if ap %}
-            {% if ap.estado == 'aprobado' %}
-              <td style="border: 1px solid #ccc; padding: 6px;">
-                {{ ap.usuario.get_full_name|default:ap.usuario.username }}
-              </td>
-              <td style="border: 1px solid #ccc; padding: 6px;">
-                {{ ap.fecha|date:"d/m/Y H:i" }}
-              </td>
-              <td style="border: 1px solid #ccc; padding: 6px;">
-                {{ ap.comentario|default:"—" }}
-              </td>
-            {% elif ap.estado == 'rechazado' %}
-              <td style="border: 1px solid #ccc; padding: 6px;">
-                {{ ap.usuario.get_full_name|default:ap.usuario.username|default:"—" }}
-              </td>
-              <td style="border: 1px solid #ccc; padding: 6px;">
-                {{ ap.fecha|date:"d/m/Y H:i"|default:"—" }}
-              </td>
-              <td style="border: 1px solid #ccc; padding: 6px;" class="text-danger fw-bold">
-                ❌ {{ ap.comentario|default:"Rechazado sin comentario" }}
-              </td>
-            {% else %}
-              <td style="border: 1px solid #ccc; padding: 6px; color: #888;">—</td>
-              <td style="border: 1px solid #ccc; padding: 6px; color: #888;">—</td>
-              <td style="border: 1px solid #ccc; padding: 6px; color: #888;">Pendiente</td>
-            {% endif %}
+      <tr>
+        <td>{{ tipo|title }}</td>
+        {% with aprobacion=aprobaciones|get_item:tipo %}
+          {% if aprobacion %}
+            <td>{{ aprobacion.usuario.get_full_name|default:aprobacion.usuario.username }}</td>
+            <td>{{ aprobacion.comentario }}</td>
+            <td>
+              {% if aprobacion.estado == 'aprobado' %}
+                <span class="badge bg-success">Aprobado</span>
+              {% elif aprobacion.estado == 'rechazado' %}
+                <span class="badge bg-danger">Rechazado</span>
+              {% else %}
+                <span class="badge bg-secondary">Pendiente</span>
+              {% endif %}
+            </td>
+            <td>{{ aprobacion.fecha|date:"d/m/Y H:i" }}</td>
           {% else %}
-            <td style="border: 1px solid #ccc; padding: 6px; color: #aaa;">—</td>
-            <td style="border: 1px solid #ccc; padding: 6px; color: #aaa;">—</td>
-            <td style="border: 1px solid #ccc; padding: 6px; color: #aaa;">Pendiente</td>
+            <td colspan="4" class="text-muted">Pendiente</td>
           {% endif %}
+        {% endwith %}
+      </tr>
+      
+      {% if tipo == etapa_actual and acta.cerrada_por_tecnico and tipo in grupos_usuario %}
+        <tr>
+          <td colspan="5">
+            <form method="post" action="{% url 'aprobaciones:aprobar' tipo app_label model_name acta.id %}">
+              {% csrf_token %}
+              <input type="hidden" name="tipo" value="{{ tipo }}">
+              <input type="hidden" name="app_label" value="{{ app_label }}">
+              <input type="hidden" name="model_name" value="{{ model_name }}">
+
+              <input type="hidden" name="object_id" value="{{ acta.id }}">
+              <div class="d-flex gap-2 align-items-center">
+                <input type="text" name="comentario" class="form-control form-control-sm" placeholder="Comentario opcional...">
+                <button type="submit" name="accion" value="aprobar" class="btn btn-success btn-sm">✅ Aprobar</button>
+                <button type="submit" name="accion" value="rechazar" class="btn btn-danger btn-sm">❌ Rechazar</button>
+              </div>
+            </form>
+          </td>
         </tr>
-      {% endwith %}
+      {% endif %}
+
     {% endfor %}
   </tbody>
 </table>
 
 
-{# ✅ Mostrar formulario solo si el usuario puede aprobar esta etapa #}
-{% if puede_aprobar %}
-  {% with ap=aprobaciones|get_item:tipo_aprobador %}
-    {% if not ap or ap.estado == 'pendiente' %}
-      <div class="card mt-4 shadow-sm border-0">
-        <div class="card-body">
-          <h6 class="mb-3 text-primary">
-            ¿Deseas aprobar esta acta como <strong>{{ tipo_aprobador|capfirst }}</strong>?
-          </h6>
-      
-          <form id="form-aprobacion" method="post"
-                action="{% url 'aprobaciones:aprobar' tipo_aprobador 'inventario' 'actaentrega' acta.id %}?next={{ request.path }}">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label for="comentario" class="form-label">Comentario (opcional)</label>
-              <textarea name="comentario" id="comentario" rows="2"
-                        class="form-control" placeholder="Escribe un comentario..."></textarea>
-            </div>
-      
-            <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-success btn-sm"
-                      onclick="setAction('aprobar')">✅ Aprobar</button>
-      
-              <button type="submit" class="btn btn-danger btn-sm"
-                      onclick="setAction('rechazar')">❌ Rechazar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      
-      <script>
-        function setAction(tipo) {
-          const form = document.getElementById('form-aprobacion');
-          const baseUrl = tipo === 'aprobar'
-            ? "{% url 'aprobaciones:aprobar' tipo_aprobador 'inventario' 'actaentrega' acta.id %}"
-            : "{% url 'aprobaciones:rechazar' tipo_aprobador 'inventario' 'actaentrega' acta.id %}";
-          form.action = baseUrl + "?next={{ request.path }}";
-        }
-      </script>
-    
-    {% endif %}
-  {% endwith %}
-{% endif %}
+
+
 
 

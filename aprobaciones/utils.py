@@ -42,7 +42,7 @@ def obtener_aprobaciones_pendientes(user):
 
     pendientes = []
 
-    for acta in ActaEntrega.objects.filter(firmada_por_tecnico=True):
+    for acta in ActaEntrega.objects.filter(cerrada_por_tecnico=True):
         content_type = ContentType.objects.get_for_model(acta)
         aprobaciones = Aprobacion.objects.filter(
             content_type=content_type,

@@ -13,7 +13,7 @@ class MaterialForm(forms.ModelForm):
 class ActaEntregaForm(forms.ModelForm):
     class Meta:
         model = ActaEntrega
-        exclude = ['tecnico', 'firmada_por_tecnico', 'fecha']
+        exclude = ['tecnico', 'cerrada_por_tecnico', 'fecha']
 
 
 # ---------- FORMULARIO DE DETALLE ----------

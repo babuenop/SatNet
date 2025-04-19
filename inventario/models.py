@@ -51,8 +51,42 @@ class Material(models.Model):
 
 class ActaEntrega(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
-    tecnico = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    firmada_por_tecnico = models.BooleanField(default=False)
+
+    tecnico = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='actas_asignadas'
+    )
+
+    acta = models.BooleanField(default=False)
+
+    cerrada_por_tecnico = models.BooleanField(default=False)
+
+    cerrado_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='actas_cerradas'
+    )
+
+    cerrado_en = models.DateTimeField(null=True, blank=True)
+
+    TIPOS_ACTA = [
+        ('recuperados', 'Entrega de materiales recuperados'),
+        ('reparados', 'Entrega de materiales reparados'),
+        ('reparacion_diaria', 'Reparación diaria de laboratorio'),
+        ('devolucion', 'Devolución al almacén'),
+    ]
+
+    tipo = models.CharField(
+        max_length=30,
+        choices=TIPOS_ACTA,
+        default='reparacion_diaria',
+        verbose_name="Tipo de acta"
+    )
+
     estado = models.CharField(max_length=20, choices=[
         ('pendiente', 'Pendiente'),
         ('aprobada', 'Aprobada'),

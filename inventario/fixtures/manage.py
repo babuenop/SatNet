@@ -19,7 +19,7 @@
     "fields": {
       "tecnico": 1,
       "fecha": "2025-04-10",
-      "firmada_por_tecnico": true
+      "cerrada_por_tecnico": true
     }
   },
   {

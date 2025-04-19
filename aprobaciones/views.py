@@ -11,6 +11,9 @@ from .models import Aprobacion
 from .forms import ComentarioAprobacionForm
 from aprobaciones.utils import obtener_etapa_usuario
 
+from django.http import HttpResponseForbidden
+
+
 
 # Constante de flujo de aprobación
 FLUJO_ETAPAS = ['tecnico', 'supervisor', 'seguridad', 'almacen']
@@ -48,12 +51,12 @@ def aprobar_objeto(request, tipo, app_label, model, object_id):
     objeto = get_object_or_404(model_class, pk=object_id)
     content_type = ContentType.objects.get_for_model(objeto)
 
-    aprobacion, _ = Aprobacion.objects.get_or_create(
-        tipo=tipo,
-        content_type=content_type,
-        object_id=objeto.id
-    )
+    # ❗ Validación de rol (grupo debe coincidir con tipo)
+    grupos_usuario = [g.name.lower() for g in request.user.groups.all()]
+    if tipo.lower() not in grupos_usuario:
+        return HttpResponseForbidden("⛔ No tienes permiso para aprobar como esta etapa.")
 
+    # ❗ Validación de etapas previas
     etapa_faltante = validar_etapas_previas(content_type, objeto.id, tipo)
     if etapa_faltante:
         messages.error(request, f"No puedes aprobar como '{tipo.upper()}'. Falta aprobación de: '{etapa_faltante.upper()}'.")
@@ -62,6 +65,11 @@ def aprobar_objeto(request, tipo, app_label, model, object_id):
     if request.method == 'POST':
         form = ComentarioAprobacionForm(request.POST)
         if form.is_valid():
+            aprobacion, _ = Aprobacion.objects.get_or_create(
+                tipo=tipo,
+                content_type=content_type,
+                object_id=objeto.id
+            )
             aprobacion.estado = 'aprobado'
             aprobacion.comentario = form.cleaned_data['comentario']
             aprobacion.usuario = request.user
@@ -70,6 +78,7 @@ def aprobar_objeto(request, tipo, app_label, model, object_id):
             return redirect(reverse('aprobaciones:mis_aprobaciones'))
 
     return redirect(request.GET.get("next", "/"))
+
 
 # -------------------------------------
 # ❌ RECHAZAR OBJETO
@@ -130,7 +139,7 @@ def mis_aprobaciones(request):
 
     aprobaciones_pendientes = []
 
-    for acta in ActaEntrega.objects.filter(firmada_por_tecnico=True):
+    for acta in ActaEntrega.objects.filter(cerrada_por_tecnico=True):
         content_type = ContentType.objects.get_for_model(acta)
 
         aprobaciones = Aprobacion.objects.filter(
