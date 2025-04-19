@@ -3,7 +3,6 @@
 {% load form_extras %}
 {% load filters %}  
 
-
 {% block title %}Acta #{{ acta.id }}{% endblock %}
 
 {% block content %}
@@ -12,13 +11,13 @@
 <div class="card shadow-sm mb-3 border-0">
   <div class="card-body py-2 px-3 small">
     <div class="row">
-      <div class="col-sm-4"><strong>Técnico:</strong> {{ acta.tecnico }}</div>
-      <div class="col-sm-4"><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</div>
-      <div class="col-sm-4">
+      <div class="col-md-4"><strong>Técnico:</strong> {{ acta.tecnico }}</div>
+      <div class="col-md-4"><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</div>
+      <div class="col-md-4">
         <strong>Estado:</strong>
         {% if not acta.firmada_por_tecnico %}
           <span class="badge bg-warning text-dark">Sin firmar</span>
-        {% elif aprobaciones.tecnico.estado == 'rechazado' or aprobaciones.supervisor.estado == 'rechazado' or aprobaciones.seguridad.estado == 'rechazado' or aprobaciones.almacen.estado == 'rechazado' %}
+        {% elif 'rechazado' in aprobaciones.values|join:" " %}
           <span class="badge bg-danger">❌ Rechazada</span>
         {% elif aprobaciones.supervisor.estado != 'aprobado' %}
           <span class="badge bg-info text-dark">🔄 Esperando aprobación del supervisor</span>
@@ -52,51 +51,61 @@
   {% endfor %}
 {% endif %}
 
-{% if acta.firmada_por_tecnico %}
-  <div class="alert alert-info">
-    Estado actual:
-    {% if aprobaciones.tecnico.estado != 'aprobado' %}
-      Esperando firma técnica.
+
+{% if acta.estado == 'rechazada' %}
+  <div class="alert alert-info{% if acta.estado == 'rechazada' %} alert-danger fw-bold{% endif %}">
+    <strong>Estado actual:</strong>
+    {% if not acta.firmada_por_tecnico %}
+      <span style="color: red; font-weight: bold;">❌ No firmada</span>
+    
+    {% elif aprobaciones.tecnico.estado == 'rechazado'
+        or aprobaciones.supervisor.estado == 'rechazado'
+        or aprobaciones.seguridad.estado == 'rechazado'
+        or aprobaciones.almacen.estado == 'rechazado' %}
+      <span style="color: red; font-weight: bold;">❌ Esta acta ha sido rechazada. El flujo de aprobación ha sido detenido.</span>
+
     {% elif aprobaciones.supervisor.estado != 'aprobado' %}
-      Pendiente de aprobación del supervisor.
+      🔄 Pendiente de aprobación del supervisor.
+
     {% elif aprobaciones.seguridad.estado != 'aprobado' %}
-      Pendiente de validación de seguridad.
+      🔄 Validación de seguridad pendiente.
+
     {% elif aprobaciones.almacen.estado != 'aprobado' %}
-      Pendiente de recepción en almacén.
+      🛆 En espera de recepción en almacén.
+
     {% else %}
       ✅ Aprobada completamente.
     {% endif %}
   </div>
+
+
 {% endif %}
 
-{% if not modo_lectura %}
-<form method="post" class="row gx-2 gy-2 align-items-end mb-4" style="max-width: 700px;">
-  {% csrf_token %}
-
-  <div class="col-md-5 col-sm-6">
-    <label for="material" class="form-label small">Código de Material</label>
-    <input list="materiales-list" name="material" id="material"
-           class="form-control form-control-sm" placeholder="Ej: M001" required>
-    <datalist id="materiales-list">
-      {% for m in materiales %}
-        <option value="{{ m.codigo }}">{{ m.codigo }} - {{ m.descripcion }}</option>
-      {% endfor %}
-    </datalist>
-  </div>
-
-  <div class="col-md-3 col-sm-3">
-    <label for="cantidad" class="form-label small">Cantidad</label>
-    <input type="number" name="cantidad" id="cantidad"
-           class="form-control form-control-sm" min="1" required>
-  </div>
-
-  <div class="col-md-4 col-sm-3">
-    <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">➕ Agregar</button>
-  </div>
-</form>
+{% if not modo_lectura and not tiene_aprobaciones %}
+  {% if request.user.groups.first.name in "tecnico supervisor" %}
+    <form method="post" class="row gx-2 gy-2 align-items-end mb-4" style="max-width: 700px;">
+      {% csrf_token %}
+      <div class="col-md-5">
+        <label for="material" class="form-label small">Código de Material</label>
+        <input list="materiales-list" name="material" id="material" class="form-control form-control-sm" placeholder="Ej: M001" required>
+        <datalist id="materiales-list">
+          {% for m in materiales %}
+            <option value="{{ m.codigo }}">{{ m.codigo }} - {{ m.descripcion }}</option>
+          {% endfor %}
+        </datalist>
+      </div>
+      <div class="col-md-3">
+        <label for="cantidad" class="form-label small">Cantidad</label>
+        <input type="number" name="cantidad" id="cantidad" class="form-control form-control-sm" min="1" required>
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary btn-sm w-100 mt-2">➕ Agregar</button>
+      </div>
+    </form>
+    {% endif %}
 {% endif %}
 
-<hr class="my-3">
+<hr class="my-4">
 <h6 class="text-primary fw-bold">📦 Materiales Entregados</h6>
 <div class="table-responsive">
   <table class="table table-sm table-bordered align-middle mb-3">
@@ -135,27 +144,29 @@
   </table>
 </div>
 
+
+{# ✅ Timeline de firmas y formulario de aprobación (si aplica) #}
+{% if acta.estado != 'rechazada' %}
+  {% include "aprobaciones/_timeline.html" with aprobaciones=aprobaciones acta=acta puede_aprobar=puede_aprobar tipo_aprobador=tipo_aprobador etapa_actual=etapa_actual %}
+{% endif %}
+
 {% if detalles %}
-
-
   <div class="card border-0 shadow-sm mt-4">
     <div class="card-body d-flex flex-wrap justify-content-end align-items-center gap-2 py-3 px-3">
 
       <a href="{% url 'inventario:acta_pdf' acta.id %}" target="_blank"
-        class="btn btn-outline-dark btn-sm flex-grow-1 flex-md-grow-0"
+        class="btn btn-outline-dark btn-sm"
         title="Abrir PDF en nueva pestaña">
         🖨️ Vista previa PDF
       </a>
 
       {% if not acta.firmada_por_tecnico and not modo_lectura %}
-        <a href="{% url 'inventario:firmar_acta' acta.pk %}"
-          class="btn btn-success btn-sm flex-grow-1 flex-md-grow-0">
+        <a href="{% url 'inventario:firmar_acta' acta.pk %}" class="btn btn-success btn-sm">
           ✅ Firmar y cerrar acta
         </a>
       {% endif %}
 
-      <a href="{% url 'inventario:lista_actas' %}"
-        class="btn btn-outline-secondary btn-sm flex-grow-1 flex-md-grow-0">
+      <a href="{% url 'inventario:lista_actas' %}" class="btn btn-outline-secondary btn-sm">
         ← Volver al listado
       </a>
 
@@ -164,8 +175,4 @@
 {% endif %}
 
 
-{% include "aprobaciones/_timeline.html" with aprobaciones=aprobaciones %}
-
 {% endblock %}
-
-

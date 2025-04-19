@@ -53,6 +53,11 @@ class ActaEntrega(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     tecnico = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     firmada_por_tecnico = models.BooleanField(default=False)
+    estado = models.CharField(max_length=20, choices=[
+        ('pendiente', 'Pendiente'),
+        ('aprobada', 'Aprobada'),
+        ('rechazada', 'Rechazada'),
+    ], default='pendiente')
 
     def __str__(self):
         return f"Acta #{self.id} - {self.fecha}"

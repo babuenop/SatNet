@@ -1,25 +1,20 @@
+ # Usuario por defecto de Django
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import ActaEntrega, DetalleEntrega, Material, User
-from django.contrib.contenttypes.models import ContentType
-from aprobaciones.models import Aprobacion
 
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.contenttypes.models import ContentType
-
-from inventario.models import ActaEntrega, Material, DetalleEntrega
-from aprobaciones.models import Aprobacion
-from aprobaciones.utils import etapas_previas, FLUJO_ETAPAS
-from aprobaciones.helpers import obtener_dict_aprobaciones  # si tienes esta función
-
-
-
-from .forms import MaterialForm
 from django.db.models import Q
-from django.contrib.auth.models import User  # Usuario por defecto de Django
+from django.contrib.contenttypes.models import ContentType
+
+from .models import ActaEntrega, DetalleEntrega, Material
+from .forms import MaterialForm
+
+from aprobaciones.models import Aprobacion
+from aprobaciones.utils import FLUJO_ETAPAS, etapas_previas, obtener_etapa_pendiente
+from aprobaciones.helpers import obtener_dict_aprobaciones
+from aprobaciones.views import obtener_etapa_usuario
 
 
 # ---------- CRUD MATERIALES ----------
@@ -82,6 +77,10 @@ def eliminar_material(request, pk):
 
 @login_required
 def registrar_acta(request):
+        # 🔒 Solo técnicos pueden acceder
+    if request.user.groups.first().name != 'tecnico':
+        return HttpResponseForbidden("Solo técnicos pueden registrar actas.")
+
     acta = ActaEntrega.objects.filter(tecnico=request.user, firmada_por_tecnico=False).first()
     if not acta:
         acta = ActaEntrega.objects.create(tecnico=request.user)
@@ -134,12 +133,18 @@ def detalle_acta(request, pk):
     acta = get_object_or_404(ActaEntrega, pk=pk)
     materiales = Material.objects.filter(activo=True).order_by('descripcion')
     detalles = acta.detalles.select_related('material', 'reparado_por')
-    tipo_aprobador = request.GET.get("tipo")
+    tiene_aprobaciones = Aprobacion.objects.filter(
+    content_type=ContentType.objects.get_for_model(acta),
+    object_id=acta.id
+    ).exists()
 
+
+
+    tipo_aprobador = obtener_etapa_usuario(request.user)
+    etapa_actual = obtener_etapa_pendiente(acta)
     puede_editar = request.user == acta.tecnico and not acta.firmada_por_tecnico
+    puede_aprobar = tipo_aprobador == etapa_actual and etapa_actual is not None
 
-    # 👇 Validación para permitir mostrar el formulario de aprobación
-    puede_aprobar = False
     if tipo_aprobador in FLUJO_ETAPAS and acta.firmada_por_tecnico and detalles.exists():
         puede_aprobar = True
         content_type = ContentType.objects.get_for_model(acta)
@@ -154,32 +159,34 @@ def detalle_acta(request, pk):
                 break
 
     # 👇 Lógica para agregar materiales a la acta
-    if request.method == 'POST' and puede_editar:
-        codigo = request.POST.get('material')
-        cantidad = request.POST.get('cantidad')
+        if request.method == 'POST' and puede_editar:
 
-        try:
-            material = Material.objects.get(codigo=codigo)
-        except Material.DoesNotExist:
-            messages.error(request, "⚠️ El código ingresado no corresponde a ningún material.")
+            
+            codigo = request.POST.get('material')
+            cantidad = request.POST.get('cantidad')
+
+            try:
+                material = Material.objects.get(codigo=codigo)
+            except Material.DoesNotExist:
+                messages.error(request, "⚠️ El código ingresado no corresponde a ningún material.")
+                return redirect('inventario:detalle_acta', pk=pk)
+
+            try:
+                cantidad = int(cantidad)
+                if cantidad <= 0:
+                    raise ValueError
+            except (TypeError, ValueError):
+                messages.error(request, "⚠️ Debes ingresar una cantidad válida.")
+                return redirect('inventario:detalle_acta', pk=pk)
+
+            DetalleEntrega.objects.create(
+                acta=acta,
+                material=material,
+                cantidad=cantidad,
+                reparado_por=request.user
+            )
+            messages.success(request, "✅ Material agregado a la acta.")
             return redirect('inventario:detalle_acta', pk=pk)
-
-        try:
-            cantidad = int(cantidad)
-            if cantidad <= 0:
-                raise ValueError
-        except (TypeError, ValueError):
-            messages.error(request, "⚠️ Debes ingresar una cantidad válida.")
-            return redirect('inventario:detalle_acta', pk=pk)
-
-        DetalleEntrega.objects.create(
-            acta=acta,
-            material=material,
-            cantidad=cantidad,
-            reparado_por=request.user
-        )
-        messages.success(request, "✅ Material agregado a la acta.")
-        return redirect('inventario:detalle_acta', pk=pk)
 
     return render(request, "inventario/acta_base.html", {
         "acta": acta,
@@ -189,44 +196,24 @@ def detalle_acta(request, pk):
         "etapas": FLUJO_ETAPAS,
         "puede_editar": puede_editar,
         "puede_aprobar": puede_aprobar,
+        "etapa_actual": etapa_actual,
         "aprobaciones": obtener_dict_aprobaciones(acta),
+        "tiene_aprobaciones": tiene_aprobaciones,
     })
 
-
-    # Aprobaciones solo si ya fue firmada
-    aprobaciones = {}
-    etapas = ["tecnico", "supervisor", "seguridad", "almacen"]
-    if acta.firmada_por_tecnico:
-        content_type = ContentType.objects.get_for_model(acta)
-        aprobaciones = {
-            a.tipo: a for a in Aprobacion.objects.filter(content_type=content_type, object_id=acta.id)
-        }
-
-
-
-    return render(request, 'inventario/acta_base.html', {
-        'acta': acta,
-        'materiales': materiales,
-        'detalles': detalles,
-        'modo_lectura': not puede_editar,
-        'aprobaciones': aprobaciones,
-        'etapas': etapas,
-        'tipo_aprobador': tipo_aprobador,
-    })
-
-
+    
 
 
 
 @login_required
 def agregar_detalle(request, pk):
     """Recibe el POST del formulario y guarda la línea como en una caja registradora"""
-    acta = get_object_or_404(
-        ActaEntrega,
-        pk=pk,
-        tecnico=request.user,
-        firmada_por_tecnico=False,
-    )
+
+    acta = get_object_or_404(ActaEntrega, pk=pk)
+
+    grupo = request.user.groups.first().name.lower() if request.user.groups.exists() else ''
+    if acta.firmada_por_tecnico or (request.user != acta.tecnico and grupo != 'supervisor'):
+        return HttpResponseForbidden("Solo el técnico responsable o un supervisor pueden modificar esta acta sin firmar.")
 
     if request.method == 'POST':
         material_id = request.POST.get('material')
@@ -240,27 +227,40 @@ def agregar_detalle(request, pk):
             acta=acta,
             material_id=material_id,
             cantidad=cantidad,
-            reparado_por=request.user,
+            reparado_por=request.user,  # Puede ser técnico o supervisor
         )
+        messages.success(request, "✅ Material agregado.")
+        return redirect('inventario:detalle_acta', pk=pk)
 
     return redirect('inventario:detalle_acta', pk=pk)
 
+
 @login_required
 def eliminar_item_acta(request, item_id):
-    item = get_object_or_404(
-        DetalleEntrega,
-        id=item_id,
-        acta__tecnico=request.user,
-        acta__firmada_por_tecnico=False
-    )
+    try:
+        item = DetalleEntrega.objects.select_related('acta').get(id=item_id)
+    except DetalleEntrega.DoesNotExist:
+        messages.error(request, "⚠️ El ítem no existe.")
+        return redirect('inventario:lista_actas')  # o algún fallback seguro
+
+    acta = item.acta
+
+    # 🔒 Validaciones de permiso
+    if acta.tecnico != request.user:
+        messages.error(request, "⛔ No tienes permiso para modificar esta acta.")
+        return redirect('inventario:detalle_acta', pk=acta.id)
+
+    if acta.firmada_por_tecnico:
+        messages.warning(request, "🔒 Esta acta ya fue firmada y no se puede modificar.")
+        return redirect('inventario:detalle_acta', pk=acta.id)
 
     if request.method == 'POST':
-        acta_id = item.acta.id
         item.delete()
         messages.success(request, "🗑️ Material eliminado del acta.")
-        return redirect('inventario:detalle_acta', pk=acta_id)
+        return redirect('inventario:detalle_acta', pk=acta.id)
 
-    return render(request, 'inventario/confirmar_eliminar_item.html', {'item': item})
+    return render(request, 'inventario/confirmar_eliminar_item.html', {'item': item, 'acta': acta})
+
 
 
 
@@ -292,16 +292,10 @@ def firmar_acta(request, pk):
             'usuario': request.user,
         }
     )
-
-    messages.success(request, f"✅ Acta #{pk} firmada exitosamente. Se ha registrado como completada por el técnico.")
+    messages.success(request, f"✅ Acta #{pk} firmada exitosamente.")
+    messages.info(request, "📤 Ahora está pendiente de aprobación por el supervisor.")
     return redirect('inventario:detalle_acta', pk=pk)
 
-
-
-
-from django.contrib.auth.models import User
-from django.utils.dateparse import parse_date
-from datetime import datetime
 
 @login_required
 def lista_actas(request):

@@ -1,20 +1,39 @@
+from django.contrib.contenttypes.models import ContentType
 from .models import Aprobacion
 from inventario.models import ActaEntrega
-from django.contrib.contenttypes.models import ContentType
+from .views import etapas_previas, obtener_etapa_usuario  # si están en views.py
 
 def aprobaciones_pendientes(request):
-    if not request.user.is_authenticated or not request.user.groups.exists():
+    if not request.user.is_authenticated:
         return {}
 
-    grupo = request.user.groups.first().name
-    pendientes = 0
+    tipo = obtener_etapa_usuario(request.user)
+    if not tipo:
+        return {}
 
-    for acta in ActaEntrega.objects.filter(firmada_por_tecnico=True):
-        ct = ContentType.objects.get_for_model(acta)
-        aprobacion = Aprobacion.objects.filter(content_type=ct, object_id=acta.id, tipo=grupo).first()
-        if not aprobacion or aprobacion.estado == 'pendiente':
-            pendientes += 1
+    count = 0
+
+    for acta in ActaEntrega.objects.filter(firmada_por_tecnico=True).exclude(estado='rechazada'):
+        content_type = ContentType.objects.get_for_model(acta)
+
+        aprobaciones = Aprobacion.objects.filter(
+            content_type=content_type,
+            object_id=acta.id
+        ).values("tipo", "estado")
+
+        estado_etapas = {a["tipo"]: a["estado"] for a in aprobaciones}
+
+        etapas_previas_ok = all(
+            estado_etapas.get(etapa) == 'aprobado'
+            for etapa in etapas_previas(tipo)
+        )
+        if not etapas_previas_ok:
+            continue
+
+        aprobacion = estado_etapas.get(tipo)
+        if not aprobacion or aprobacion == 'pendiente':
+            count += 1
 
     return {
-        'aprobaciones_pendientes_count': pendientes
+        'aprobaciones_pendientes_count': count
     }
