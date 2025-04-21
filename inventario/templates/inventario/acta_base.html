@@ -6,47 +6,55 @@
 {% block title %}Acta #{{ acta.id }}{% endblock %}
 
 {% block content %}
-<h4 class="mb-3 text-primary fw-semibold">📜 Acta #{{ acta.id }}</h4>
 
-<div class="card shadow-sm mb-3 border-0">
-  <div class="card-body py-2 px-3 small">
-    <div class="row">
-      <div class="col-md-4"><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</div>
-      <div class="col-md-4"><strong>Técnico:</strong> {{ acta.tecnico }}</div>
-      <div class="col-md-4"><strong>Tipo de acta:</strong> {{ acta.get_tipo_display }}</div>
-    </div>
 
-    <div class="row mt-2">
-      <div class="col-md-8">
-        {% if acta.cerrada_por_tecnico %}
-          <p class="text-success mb-1">
-            ✅ Cerrada por <strong>{{ acta.cerrado_por.get_full_name|default:acta.cerrado_por.username }}</strong>
-            el <strong>{{ acta.cerrado_en|date:"d M Y H:i" }}</strong>
-          </p>
-        {% else %}
-          <p class="text-danger mb-1">⚠️ Acta no cerrada</p>
-        {% endif %}
-      </div>
-
-      <div class="col-md-4">
-        <strong>Estado:</strong>
-        {% if not acta.cerrada_por_tecnico %}
-          <span class="badge bg-warning text-dark">Sin firmar</span>
-        {% elif 'rechazado' in aprobaciones.values|join:" " %}
-          <span class="badge bg-danger">❌ Rechazada</span>
-        {% elif aprobaciones.supervisor.estado != 'aprobado' %}
-          <span class="badge bg-info text-dark">🔄 Esperando aprobación del supervisor</span>
-        {% elif aprobaciones.seguridad.estado != 'aprobado' %}
-          <span class="badge bg-info text-dark">🔄 Validación de seguridad pendiente</span>
-        {% elif aprobaciones.almacen.estado != 'aprobado' %}
-          <span class="badge bg-info text-dark">🛆 En espera de recepción en almacén</span>
-        {% else %}
-          <span class="badge bg-success">✅ Aprobada completamente</span>
-        {% endif %}
-      </div>
-    </div>
-  </div>
+<div class="table-responsive mb-3">
+  <table class="table table-bordered table-sm small">
+    <thead>
+      <tr>
+        <th colspan="3" class="bg-dark text-white text-center text-uppercase fw-bold">
+          📜 Acta #{{ acta.id }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</td>
+        <td><strong>Técnico:</strong> {{ acta.tecnico }}</td>
+        <td><strong>Tipo de acta:</strong> {{ acta.get_tipo_display }}</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          {% if acta.cerrada_por_tecnico %}
+            <span class="text-success">✅ Cerrada por <strong>{{ acta.cerrado_por.get_full_name|default:acta.cerrado_por.username }}</strong>
+              el <strong>{{ acta.cerrado_en|date:"d M Y H:i" }}</strong>
+            </span>
+          {% else %}
+            <span class="text-danger fw-semibold">⚠️ Acta no cerrada</span>
+          {% endif %}
+        </td>
+        <td>
+          <strong>Estado:</strong>
+          {% if not acta.cerrada_por_tecnico %}
+            <span class="badge bg-warning text-dark">🕓 No cerrada</span>
+          {% elif 'rechazado' in aprobaciones.values|join:" " %}
+            <span class="badge bg-danger">❌ Rechazada</span>
+          {% elif aprobaciones.supervisor.estado != 'aprobado' %}
+            <span class="badge bg-info text-dark">🔄 Esperando aprobación del supervisor</span>
+          {% elif aprobaciones.seguridad.estado != 'aprobado' %}
+            <span class="badge bg-info text-dark">🔄 Validación de seguridad pendiente</span>
+          {% elif aprobaciones.almacen.estado != 'aprobado' %}
+            <span class="badge bg-info text-dark">🛆 En espera de recepción en almacén</span>
+          {% else %}
+            <span class="badge bg-success">✅ Aprobada completamente</span>
+          {% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+
 
 {% if messages %}
   {% for message in messages %}
@@ -120,17 +128,22 @@
     {% endif %}
 {% endif %}
 
-<hr class="my-4">
-<h6 class="text-primary fw-bold">📦 Materiales Entregados</h6>
 <div class="table-responsive">
   <table class="table table-sm table-bordered align-middle mb-3">
     <thead class="table-light small">
+      <tr>
+        <th colspan="{% if not acta.cerrada_por_tecnico %}5{% else %}4{% endif %}" class="bg-dark text-white text-center text-uppercase fw-bold">
+          📦 Materiales Entregados
+        </th>
+      </tr>
       <tr>
         <th>Código</th>
         <th>Descripción</th>
         <th>Cantidad</th>
         <th>Reparado por</th>
-        {% if not acta.cerrada_por_tecnico %}<th class="text-center">Acción</th>{% endif %}
+        {% if not acta.cerrada_por_tecnico %}
+          <th class="text-center">Acción</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody class="small">
@@ -152,12 +165,15 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="5" class="text-center text-muted">Esta acta no tiene ítems registrados.</td>
+          <td colspan="{% if not acta.cerrada_por_tecnico %}5{% else %}4{% endif %}" class="text-center text-muted">
+            Esta acta no tiene ítems registrados.
+          </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+
 
 {% if acta.estado != 'rechazada' and tipo_aprobador != 'tecnico' %}
   {% include "aprobaciones/_timeline.html" with aprobaciones=aprobaciones acta=acta puede_aprobar=puede_aprobar tipo_aprobador=tipo_aprobador etapa_actual=etapa_actual app_label=app_label model_name=model_name %}

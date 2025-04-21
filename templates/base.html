@@ -89,6 +89,9 @@
       background-color: #EF4444;
       border-color: #EF4444;
     }
+    select.form-select option {
+      padding-left: 1.2rem;
+    }
   </style>
 </head>
 
@@ -104,7 +107,8 @@
         <i class="bi bi-person-circle me-1"></i> {{ user.username }}
       </span>
   
-      <!-- Notificaciones -->
+      {% comment %} ## Botón de cambio de usuario (solo si no es modo lectura)
+      {% if not modo_lectura %}
       
       <div class="dropdown">
         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -115,16 +119,27 @@
           <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 1 %}">👷 Admin</a></li>
           <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 2 %}">🧑‍💼 Supervisor</a></li>
           <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 3 %}">🛡️ Seguridad</a></li>
-          <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 4 %}">🛡️ almacen1</a></li>
-          <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 5 %}">🛡️ tech1</a></li>
-          <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 6 %}">🛡️ tech2</a></li>
+          <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 4 %}">📦 Almacén</a></li>
+          <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 5 %}">🧰 Tech1</a></li>
+          <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' 6 %}">🧰 Tech2</a></li>
           {% if request.session.admin_id %}
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{% url 'inventario:cambiar_usuario' request.session.admin_id %}">👑 Volver a Admin</a></li>
           {% endif %}
         </ul>
-      </div>
+      </div> 
+      {% endcomment %}
     
+    
+    
+      <a href="{% url 'aprobaciones:mis_aprobaciones' %}" class="position-relative text-dark text-decoration-none">
+        <i class="bi bi-bell-fill fs-5"></i>
+        {% if aprobaciones_pendientes_count > 0 %}
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ aprobaciones_pendientes_count }}
+          </span>
+        {% endif %}
+      </a>
     
   
       <!-- Modo debug: cambio de usuario (solo si admin_id está en sesión) -->
