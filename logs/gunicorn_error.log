@@ -1,0 +1,255 @@
+[2025-05-01 15:38:20 -0500] [15622] [INFO] Starting gunicorn 23.0.0
+[2025-05-01 15:38:20 -0500] [15622] [INFO] Listening at: http://0.0.0.0:8000 (15622)
+[2025-05-01 15:38:20 -0500] [15622] [INFO] Using worker: sync
+[2025-05-01 15:38:20 -0500] [15627] [INFO] Booting worker with pid: 15627
+[2025-05-01 15:38:20 -0500] [15628] [INFO] Booting worker with pid: 15628
+[2025-05-01 15:38:20 -0500] [15629] [INFO] Booting worker with pid: 15629
+[2025-05-01 15:41:23 -0500] [15622] [CRITICAL] WORKER TIMEOUT (pid:15628)
+[2025-05-01 20:41:23 +0000] [15628] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 271, in parse
+    self.get_data(unreader, buf, stop=True)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2025-05-01 20:41:23 +0000] [15628] [INFO] Worker exiting (pid: 15628)
+[2025-05-01 15:41:23 -0500] [16412] [INFO] Booting worker with pid: 16412
+[2025-05-01 15:42:16 -0500] [15622] [CRITICAL] WORKER TIMEOUT (pid:15629)
+[2025-05-01 15:42:16 -0500] [15622] [CRITICAL] WORKER TIMEOUT (pid:16412)
+[2025-05-01 20:42:16 +0000] [15629] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 271, in parse
+    self.get_data(unreader, buf, stop=True)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2025-05-01 20:42:16 +0000] [16412] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 271, in parse
+    self.get_data(unreader, buf, stop=True)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2025-05-01 20:42:16 +0000] [15629] [INFO] Worker exiting (pid: 15629)
+[2025-05-01 20:42:16 +0000] [16412] [INFO] Worker exiting (pid: 16412)
+[2025-05-01 15:42:17 -0500] [16572] [INFO] Booting worker with pid: 16572
+[2025-05-01 15:42:17 -0500] [15622] [ERROR] Worker (pid:15629) was sent SIGKILL! Perhaps out of memory?
+[2025-05-01 15:42:17 -0500] [16573] [INFO] Booting worker with pid: 16573
+[2025-05-01 15:42:55 -0500] [15622] [CRITICAL] WORKER TIMEOUT (pid:16573)
+[2025-05-01 20:42:55 +0000] [16573] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 271, in parse
+    self.get_data(unreader, buf, stop=True)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2025-05-01 20:42:55 +0000] [16573] [INFO] Worker exiting (pid: 16573)
+[2025-05-01 15:42:55 -0500] [16692] [INFO] Booting worker with pid: 16692
+[2025-05-01 15:56:50 -0500] [15622] [CRITICAL] WORKER TIMEOUT (pid:15627)
+[2025-05-01 20:56:50 +0000] [15627] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 271, in parse
+    self.get_data(unreader, buf, stop=True)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2025-05-01 20:56:50 +0000] [15627] [INFO] Worker exiting (pid: 15627)
+[2025-05-01 15:56:50 -0500] [19677] [INFO] Booting worker with pid: 19677
+[2025-05-01 20:59:26 +0000] [19677] [INFO] Worker exiting (pid: 19677)
+[2025-05-01 20:59:26 +0000] [16692] [INFO] Worker exiting (pid: 16692)
+[2025-05-01 20:59:26 +0000] [16572] [INFO] Worker exiting (pid: 16572)
+[2025-05-01 15:59:26 -0500] [15622] [INFO] Handling signal: term
+[2025-05-01 15:59:27 -0500] [15622] [ERROR] Worker (pid:16692) was sent SIGTERM!
+[2025-05-01 15:59:27 -0500] [15622] [ERROR] Worker (pid:19677) was sent SIGTERM!
+[2025-05-01 15:59:27 -0500] [15622] [INFO] Shutting down: Master
+[2025-05-01 15:59:27 -0500] [20261] [INFO] Starting gunicorn 23.0.0
+[2025-05-01 15:59:27 -0500] [20261] [INFO] Listening at: http://127.0.0.1:8000 (20261)
+[2025-05-01 15:59:27 -0500] [20261] [INFO] Using worker: sync
+[2025-05-01 15:59:27 -0500] [20266] [INFO] Booting worker with pid: 20266
+[2025-05-01 15:59:27 -0500] [20267] [INFO] Booting worker with pid: 20267
+[2025-05-01 15:59:27 -0500] [20268] [INFO] Booting worker with pid: 20268
+[2025-05-01 21:53:38 +0000] [20266] [INFO] Worker exiting (pid: 20266)
+[2025-05-01 21:53:38 +0000] [20267] [INFO] Worker exiting (pid: 20267)
+[2025-05-01 21:53:38 +0000] [20268] [INFO] Worker exiting (pid: 20268)
+[2025-05-01 16:53:38 -0500] [20261] [INFO] Handling signal: term
+[2025-05-01 16:53:38 -0500] [20261] [ERROR] Worker (pid:20267) was sent SIGTERM!
+[2025-05-01 16:53:38 -0500] [20261] [ERROR] Worker (pid:20266) was sent SIGTERM!
+[2025-05-01 16:53:38 -0500] [20261] [INFO] Shutting down: Master
+[2025-05-01 17:03:19 -0500] [227] [INFO] Starting gunicorn 23.0.0
+[2025-05-01 17:03:19 -0500] [227] [INFO] Listening at: http://127.0.0.1:8000 (227)
+[2025-05-01 17:03:19 -0500] [227] [INFO] Using worker: sync
+[2025-05-01 17:03:19 -0500] [328] [INFO] Booting worker with pid: 328
+[2025-05-01 17:03:19 -0500] [344] [INFO] Booting worker with pid: 344
+[2025-05-01 17:03:19 -0500] [346] [INFO] Booting worker with pid: 346
+[2025-05-01 17:06:12 -0500] [227] [CRITICAL] WORKER TIMEOUT (pid:344)
+[2025-05-01 22:06:12 +0000] [344] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 271, in parse
+    self.get_data(unreader, buf, stop=True)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2025-05-01 22:06:12 +0000] [344] [INFO] Worker exiting (pid: 344)
+[2025-05-01 17:06:12 -0500] [913] [INFO] Booting worker with pid: 913
+[2025-05-01 17:39:54 -0500] [227] [INFO] Handling signal: term
+[2025-05-01 22:39:54 +0000] [346] [INFO] Worker exiting (pid: 346)
+[2025-05-01 22:39:54 +0000] [328] [INFO] Worker exiting (pid: 328)
+[2025-05-01 22:39:54 +0000] [913] [INFO] Worker exiting (pid: 913)
+[2025-05-01 17:39:54 -0500] [227] [ERROR] Worker (pid:346) was sent SIGTERM!
+[2025-05-01 17:39:54 -0500] [227] [INFO] Shutting down: Master
+[2025-05-01 17:39:54 -0500] [4645] [INFO] Starting gunicorn 23.0.0
+[2025-05-01 17:39:54 -0500] [4645] [INFO] Listening at: http://127.0.0.1:8000 (4645)
+[2025-05-01 17:39:54 -0500] [4645] [INFO] Using worker: sync
+[2025-05-01 17:39:54 -0500] [4646] [INFO] Booting worker with pid: 4646
+[2025-05-01 17:39:54 -0500] [4647] [INFO] Booting worker with pid: 4647
+[2025-05-01 17:39:54 -0500] [4648] [INFO] Booting worker with pid: 4648
+[2025-05-01 17:41:47 -0500] [4645] [CRITICAL] WORKER TIMEOUT (pid:4646)
+[2025-05-01 22:41:47 +0000] [4646] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 271, in parse
+    self.get_data(unreader, buf, stop=True)
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/abuenop/DjangoAPP/SatNet/venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2025-05-01 22:41:47 +0000] [4646] [INFO] Worker exiting (pid: 4646)
+[2025-05-01 17:41:47 -0500] [5283] [INFO] Booting worker with pid: 5283

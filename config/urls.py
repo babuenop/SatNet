@@ -3,6 +3,11 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 # Redirección raíz: si querés llevar al usuario al inventario directamente
 def home(request):
@@ -11,6 +16,7 @@ def home(request):
 urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
+    
 
     # Módulo principal
     path('inventario/', include('inventario.urls')),
@@ -27,3 +33,7 @@ urlpatterns = [
     path('', home),  # redirige a lista de materiales (u otra vista central)
 
 ]
+
+# Sirve archivos estáticos solo si estás en modo DEBUG
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

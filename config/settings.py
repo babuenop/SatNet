@@ -13,8 +13,8 @@ import os
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+#                settings.py  ↑ config ↑ SatNet ← este es el nivel raíz
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,14 +26,16 @@ SECRET_KEY = 'django-insecure-r2gq!mqld%$g7@0%(p!mp4&%f*!l=yz5y%f6iicowo&3r5qvd@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['192.168.50.168', 'localhost','*']
 
 
 # Application definition
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+     BASE_DIR / "SatNet" / "static",  # apunta a SatNet/static
 ]
 
 # Application definition
