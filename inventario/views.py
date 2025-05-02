@@ -1,23 +1,24 @@
- # Usuario por defecto de Django
+# Estándar Django
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Count, Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 
-
-from django.db.models import Q
-from django.contrib.contenttypes.models import ContentType
-
+# Modelos y formularios locales
 from .models import ActaEntrega, DetalleEntrega, Material
 from .forms import MaterialForm
 
+# Módulo de aprobaciones
 from aprobaciones.models import Aprobacion
 from aprobaciones.utils import FLUJO_ETAPAS, etapas_previas, obtener_etapa_pendiente
 from aprobaciones.helpers import obtener_dict_aprobaciones
 from aprobaciones.views import obtener_etapa_usuario
+
 
 
 # ---------- CRUD MATERIALES ----------
@@ -77,40 +78,55 @@ def eliminar_material(request, pk):
 
 # inventario/views.py
 
-
 @login_required
-def registrar_acta(request):
-        # 🔒 Solo técnicos pueden acceder
+def registrar_acta(request, acta_id=None):
     if request.user.groups.first().name != 'tecnico':
         return HttpResponseForbidden("Solo técnicos pueden registrar actas.")
 
-    acta = ActaEntrega.objects.filter(tecnico=request.user, cerrada_por_tecnico=False).first()
-    if not acta:
-        acta = ActaEntrega.objects.create(tecnico=request.user)
+    # Selección de tipo
+    if request.GET.get('nueva') == '1':
+        if request.method == 'POST' and 'tipo_acta' in request.POST:
+            tipo = request.POST.get('tipo_acta')
+            if tipo in dict(ActaEntrega.TIPOS_ACTA):
+                acta = ActaEntrega.objects.create(tecnico=request.user, tipo=tipo)
+                return redirect('inventario:registrar_acta', acta_id=acta.id)
+            else:
+                messages.error(request, "⚠️ Tipo de acta inválido.")
 
-    materiales = Material.objects.filter(activo=True).order_by('descripcion')
+        return render(request, 'inventario/seleccionar_tipo_acta.html', {
+            'tipos': ActaEntrega.TIPOS_ACTA
+        })
 
-    if request.method == 'POST':
+    # Si ya hay acta_id
+    if acta_id:
+        acta = get_object_or_404(ActaEntrega, id=acta_id, tecnico=request.user)
+
+    # Si no hay acta_id pero el usuario ya tiene una acta sin cerrar
+    elif request.method == 'GET':
+        acta = ActaEntrega.objects.filter(tecnico=request.user, cerrada_por_tecnico=False).order_by('-fecha').first()
+        if acta:
+            return redirect('inventario:registrar_acta', acta_id=acta.id)
+        else:
+            return redirect('inventario:registrar_acta' + '?nueva=1')
+
+    else:
+        messages.error(request, "Debes especificar una acta válida.")
+        return redirect('inventario:lista_materiales')
+
+    # POST para agregar materiales
+    if request.method == 'POST' and 'material' in request.POST:
         material_codigo = request.POST.get('material')
         cantidad = request.POST.get('cantidad')
 
-        # Validar material por código
         try:
             material = Material.objects.get(codigo=material_codigo)
-        except Material.DoesNotExist:
-            messages.error(request, "⚠️ El código ingresado no corresponde a ningún material.")
-            return redirect('inventario:registrar_acta')
-
-        # Validar cantidad
-        try:
             cantidad = int(cantidad)
             if cantidad <= 0:
                 raise ValueError
-        except (TypeError, ValueError):
-            messages.error(request, "⚠️ Debes ingresar una cantidad válida.")
-            return redirect('inventario:registrar_acta')
+        except (Material.DoesNotExist, ValueError, TypeError):
+            messages.error(request, "⚠️ Código o cantidad inválido.")
+            return redirect('inventario:registrar_acta', acta_id=acta.id)
 
-        # Registrar ítem
         DetalleEntrega.objects.create(
             acta=acta,
             material=material,
@@ -118,13 +134,16 @@ def registrar_acta(request):
             reparado_por=request.user
         )
         messages.success(request, "✅ Material agregado.")
-        return redirect('inventario:registrar_acta')
+        return redirect('inventario:registrar_acta', acta_id=acta.id)
 
+    # Mostrar acta
+    materiales = Material.objects.filter(activo=True).order_by('descripcion')
     detalles = acta.detalles.select_related('material').all()
+
     return render(request, 'inventario/acta_base.html', {
         'acta': acta,
         'materiales': materiales,
-        'detalles': detalles, 
+        'detalles': detalles,
         'modo_lectura': False,
     })
 

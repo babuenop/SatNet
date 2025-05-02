@@ -190,7 +190,7 @@
               <i class="bi bi-box me-2"></i> Materiales
             </a>
             <a class="nav-link {% if request.resolver_match.url_name == 'registrar_acta' %}active{% endif %}"
-               href="{% url 'inventario:registrar_acta' %}">
+              href="{% url 'inventario:registrar_acta' %}?nueva=1">
               <i class="bi bi-pencil-square me-2"></i> Nueva Entrega
             </a>
             <a class="nav-link {% if request.resolver_match.url_name == 'lista_actas' %}active{% endif %}"

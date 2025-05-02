@@ -83,8 +83,8 @@ class ActaEntrega(models.Model):
     tipo = models.CharField(
         max_length=30,
         choices=TIPOS_ACTA,
-        default='reparacion_diaria',
-        verbose_name="Tipo de acta"
+        null=True,
+        blank=True,
     )
 
     estado = models.CharField(max_length=20, choices=[

@@ -4,6 +4,7 @@ from django.contrib.auth.views import LogoutView
 from . import views
 from .views_actas import acta_pdf
 from . import views_debug
+from . import views
 
 
 app_name = 'inventario'
@@ -18,6 +19,8 @@ urlpatterns = [
 
     # ---------- Flujo POS de actas ----------
     path('actas/registrar/', views.registrar_acta, name='registrar_acta'),
+    path('actas/registrar/<int:acta_id>/', views.registrar_acta, name='registrar_acta'),
+
     path("actas/<int:pk>/detalles/", views.detalle_acta, name="detalle_acta"),
     path("actas/<int:pk>/detalles/agregar/", views.agregar_detalle, name="agregar_detalle"),
     path('actas/<int:item_id>/eliminar-item/', views.eliminar_item_acta, name='eliminar_item_acta'),

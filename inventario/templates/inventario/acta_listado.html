@@ -58,6 +58,7 @@
       <th>#</th>
       <th>Técnico</th>
       <th>Fecha</th>
+      <th>Tipo</th>
       <th>Código</th>
       <th>Descripción</th>
       <th>Cantidad</th>
@@ -72,6 +73,7 @@
           <td>{{ acta.id }}</td>
           <td>{{ acta.tecnico }}</td>
           <td>{{ acta.fecha }}</td>
+          <td>{{ acta.get_tipo_display }}</td>
           <td>{{ detalle.material.codigo }}</td>
           <td>{{ detalle.material.descripcion }}</td>
           <td>{{ detalle.cantidad }}</td>

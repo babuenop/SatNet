@@ -2,11 +2,8 @@
 {% load static %}
 {% load form_extras %}
 {% load filters %}  
-
 {% block title %}Acta #{{ acta.id }}{% endblock %}
-
 {% block content %}
-
 
 <div class="table-responsive mb-3">
   <table class="table table-bordered table-sm small">
@@ -19,7 +16,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Fecha:</strong> {{ acta.fecha|date:"d/m/Y H:i" }}</td>
+        <td><strong>Fecha:</strong> {{ acta.fecha|localtime|date:"d/m/Y H:i" }}</td>
         <td><strong>Técnico:</strong> {{ acta.tecnico }}</td>
         <td><strong>Tipo de acta:</strong> {{ acta.get_tipo_display }}</td>
       </tr>

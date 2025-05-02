@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Selecciona el tipo de acta</h2>
+<form method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="tipo_acta">Tipo de Acta:</label>
+    <select name="tipo_acta" class="form-control" required>
+      <option value="">-- Selecciona --</option>
+      {% for codigo, nombre in tipos %}
+        <option value="{{ codigo }}">{{ nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-success mt-2">Continuar</button>
+</form>
+{% endblock %}
